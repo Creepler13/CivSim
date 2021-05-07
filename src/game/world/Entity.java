@@ -1,13 +1,16 @@
 package game.world;
 
-public class Entity {
+public abstract class Entity {
 
-	public int x, y;
-	public Chunk chunk;
+	public Position postion;
 
-	public Entity(int x, int y) {
-		this.x = x;
-		this.y = y;
+	public World world;
+
+	public abstract Model getModel();
+
+	public Entity(int x, int y, World world) {
+		this.world = world;
+		this.postion = new Position(x, y, world, this);
 	};
 
 }

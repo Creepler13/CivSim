@@ -1,14 +1,15 @@
 package game.world;
 
-public class Tile {
+public abstract class Tile {
 
 	public Build build;
-	public Chunk chunk;
-	public int x, y;
+	public World world;
+	public Position position;
 
-	public Tile(int x, int y) {
-		this.x = x;
-		this.y = y;
+	public abstract Model getModel();
+
+	public Tile(World world) {
+		this.world = world;
 	}
 
 }
