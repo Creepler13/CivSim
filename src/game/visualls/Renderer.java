@@ -49,10 +49,8 @@ public class Renderer {
 
 				g.drawRect(chunkOnCameraX, chunkOnCameraY, Globals.REAL_CHUNK_SIZE, Globals.REAL_CHUNK_SIZE);
 
-				System.out.println(chunk.position);
-
 				for (Tile tile : chunk.tiles) {
-
+					System.out.println(tile.position);
 					int tileOnCameraX = chunkOnCameraX + tile.position.tileX * Globals.TILE_SIZE;
 					int tileOnCameraY = chunkOnCameraY + tile.position.tileY * Globals.TILE_SIZE;
 

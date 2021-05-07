@@ -25,7 +25,7 @@ public class Position {
 	}
 
 	public static Position fromChunkPos(int x, int y) {
-		return new Position(x * Globals.TILE_SIZE * Globals.CHUNK_SIZE, y * Globals.TILE_SIZE * Globals.CHUNK_SIZE);
+		return new Position(x * Globals.REAL_CHUNK_SIZE, y * Globals.REAL_CHUNK_SIZE);
 	}
 
 	public void setPosition(int x, int y) {
@@ -34,8 +34,8 @@ public class Position {
 		int newChunkX = x / Globals.TILE_SIZE / Globals.CHUNK_SIZE;
 		int newChunkY = y / Globals.TILE_SIZE / Globals.CHUNK_SIZE;
 
-		this.tileX = (x - this.chunkX * Globals.TILE_SIZE * Globals.CHUNK_SIZE) / Globals.TILE_SIZE;
-		this.tileY = (y - this.chunkY * Globals.TILE_SIZE * Globals.CHUNK_SIZE) / Globals.TILE_SIZE;
+		this.tileX = (x - newChunkX * Globals.REAL_CHUNK_SIZE) / Globals.TILE_SIZE;
+		this.tileY = (y - newChunkY * Globals.REAL_CHUNK_SIZE) / Globals.TILE_SIZE;
 
 		if (this.isFromEntity) {
 			this.world.getChunk(Position.fromChunkPos(this.chunkX, this.chunkY)).entitys.remove(this.entity);
