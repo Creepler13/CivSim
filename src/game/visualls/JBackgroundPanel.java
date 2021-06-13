@@ -1,6 +1,5 @@
 package game.visualls;
 
-
 import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -13,7 +12,7 @@ import javax.swing.JPanel;
  *
  */
 
-class JBackgroundPanel extends JPanel {
+public class JBackgroundPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private Image background = null;
@@ -44,18 +43,25 @@ class JBackgroundPanel extends JPanel {
 				scale = (double) (this.getWidth()) / (double) (image.getWidth(null));
 			}
 
-			g.drawImage(image, (int) ((getWidth() - (image.getWidth(null) * scale)) / 2),
-					(int) ((getHeight() - (image.getHeight(null) * scale)) / 2), (int) (image.getWidth(null) * scale),
-					(int) (image.getHeight(null) * scale), getBackground(), null);
+			// g.drawImage(image, (int) ((getWidth() - (image.getWidth(null) * scale)) / 2),
+			// (int) ((getHeight() - (image.getHeight(null) * scale)) / 2), (int)
+			// (image.getWidth(null) * scale),
+			// (int) (image.getHeight(null) * scale), getBackground(), null);
+			g.drawImage(image, 0, 0, (int) (image.getWidth(null) * scale), (int) (image.getHeight(null) * scale),
+					getBackground(), null);
 			break;
 		case 1:
 			scale = (double) (this.getHeight()) / (double) (image.getHeight(null));
 			if (image.getWidth(null) * scale < getWidth()) {
 				scale = (double) (this.getWidth()) / (double) (image.getWidth(null));
 			}
-			g.drawImage(image, (int) ((getWidth() - (image.getWidth(null) * scale)) / 2),
-					(int) ((getHeight() - (image.getHeight(null) * scale)) / 2), (int) (image.getWidth(null) * scale),
-					(int) (image.getHeight(null) * scale), getBackground(), null);
+			// g.drawImage(image, (int) ((getWidth() - (image.getWidth(null) * scale)) / 2),
+			// (int) ((getHeight() - (image.getHeight(null) * scale)) / 2), (int)
+			// (image.getWidth(null) * scale),
+			// (int) (image.getHeight(null) * scale), getBackground(), null);
+
+			g.drawImage(image, 0, 0, (int) (image.getWidth(null) * scale), (int) (image.getHeight(null) * scale),
+					getBackground(), null);
 			break;
 		default:
 			g.drawImage(image, 0, 0, getWidth(), getHeight(), getBackground(), null);

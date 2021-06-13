@@ -1,14 +1,13 @@
 package game.objects.tiles;
 
-import game.objects.models.tiles.GroundTileModel;
+import game.models.tiles.GroundTileModel;
+import game.objectSupers.Tile;
 import game.world.Model;
-import game.world.Tile;
 import game.world.World;
 
 public class GroundTile extends Tile {
 
-	public GroundTile( World world) {
-		super(world);
+	public GroundTile() {
 	}
 
 	public Model model = new GroundTileModel();
@@ -16,6 +15,15 @@ public class GroundTile extends Tile {
 	@Override
 	public Model getModel() {
 		return this.model;
+	}
+
+	@Override
+	public void onTick(World world) {
+	}
+
+	@Override
+	public Boolean canBuildOn() {
+		return null;
 	}
 
 }
