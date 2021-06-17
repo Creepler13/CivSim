@@ -6,7 +6,7 @@ import game.world.World;
 
 public abstract class Tile {
 
-	public Build build;
+	private Build build;
 	private Position position;
 
 	public abstract Model getModel();
@@ -14,6 +14,19 @@ public abstract class Tile {
 	public abstract void onTick(World world);
 
 	public abstract Boolean canBuildOn();
+
+	public boolean hasBuild() {
+		return this.build != null;
+	}
+
+	public Build getBuild() {
+		return this.build;
+	}
+
+	public void setBuild(Build build) {
+		this.build = build;
+		this.build.setPosition(getPosition());
+	}
 
 	public Position getPosition() {
 		return this.position;

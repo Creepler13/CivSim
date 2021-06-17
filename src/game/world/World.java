@@ -52,11 +52,7 @@ public class World {
 			}
 			for (Tile tile : chunk.tiles) {
 				tile.onTick(this);
-				Build build = tile.build;
-				while (build != null) {
-					build.onTick(this);
-					build = tile.build;
-				}
+				if(tile.hasBuild())tile.getBuild().onTick();
 			}
 		}
 

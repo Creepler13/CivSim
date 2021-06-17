@@ -28,10 +28,6 @@ public class Position {
 		setPosition(this.realX, this.realY);
 	}
 
-	public static Position fromChunkPos(int x, int y) {
-		return new Position(x * Globals.REAL_CHUNK_SIZE, y * Globals.REAL_CHUNK_SIZE);
-	}
-
 	public void setPosition(int x, int y) {
 		this.realX = (x >= 0) ? (x <= Globals.REAL_MAP_WIDTH) ? x : Globals.REAL_MAP_WIDTH : 0;
 		this.realY = (y >= 0) ? (y <= Globals.REAL_MAP_HEIGHT) ? y : Globals.REAL_MAP_HEIGHT : 0;
@@ -50,10 +46,18 @@ public class Position {
 
 	};
 
+	public boolean isEntity() {
+		return this.entity != null;
+	}
+
 	@Override
 	public String toString() {
 		return "[realX:" + this.realX + ", realY:" + this.realY + ", chunkX:" + this.chunkX + ", chunkY:" + this.chunkY
 				+ ", tileX:" + this.tileX + ", tileY:" + this.tileY + ", Entity:" + this.entity + "]";
+	}
+
+	public static Position fromChunkPos(int x, int y) {
+		return new Position(x * Globals.REAL_CHUNK_SIZE, y * Globals.REAL_CHUNK_SIZE);
 	}
 
 }

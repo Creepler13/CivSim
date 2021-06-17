@@ -1,6 +1,5 @@
 package game.objects.entitys.animals;
 
-import game.JSON;
 import game.models.entitys.PigModel;
 import game.objectSupers.Animal;
 import game.objectSupers.ItemEntity;
@@ -12,13 +11,6 @@ public class Pig extends Animal {
 
 	public Pig() {
 
-		this.metadata.setInteger("HP", 5);
-		this.metadata.setBoolean("dead", false);
-		this.metadata.setString("name", "shawn");
-		JSON temp = new JSON();
-		temp.setString("name", "Heinzburg");
-		temp.setInteger("bewohner", 52);
-		this.metadata.setJSON("home", temp);
 	}
 
 	public Model model = new PigModel();

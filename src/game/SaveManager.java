@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import game.objectSupers.Build;
 import game.objectSupers.Entity;
 import game.objectSupers.Tile;
 import game.world.Chunk;
@@ -36,30 +37,35 @@ public class SaveManager {
 			File registryFile = new File("src/saves/" + name + "/reg.dat");
 			File tileFile = new File("src/saves/" + name + "/tile.dat");
 			File entityFile = new File("src/saves/" + name + "/entity.dat");
-			entityFile.createNewFile();
+			File buildsFile = new File("src/saves/" + name + "/build.dat");
 			entityFile.delete();
-			tileFile.createNewFile();
+			entityFile.createNewFile();
+			buildsFile.delete();
+			buildsFile.createNewFile();
 			tileFile.delete();
-			registryFile.createNewFile();
+			tileFile.createNewFile();
 			registryFile.delete();
+			registryFile.createNewFile();
 			FileWriter entitysWriter = new FileWriter(entityFile);
 			FileWriter tileWriter = new FileWriter(tileFile);
 			FileWriter registryWriter = new FileWriter(registryFile);
+			FileWriter buildsWriter = new FileWriter(buildsFile);
 
 			HashMap<String, String> registry = new HashMap<String, String>();
-		
+
 			System.out.println("Saving Entitys");
-			
+
 			for (Entity entity : entitys) {
 				registry.putIfAbsent(entity.getClass().getCanonicalName(), entity.getClass().getSimpleName());
 				entitysWriter.write(entity.getClass().getSimpleName() + " " + entity.getPosition().realX + " "
-						+ entity.getPosition().realY + " " + entity.metadata.toString() + "\n");
+						+ entity.getPosition().realY + " " + "\n");
 			}
 			entitysWriter.flush();
 			entitysWriter.close();
 			System.out.println("Saved " + entitys.size() + " Entitys");
 
-			System.out.println("Saving Tiles");
+			int buildCounter = 0;
+			System.out.println("Saving Tiles and Builds");
 			int tileRegCounter = 0;
 			tileWriter.write(Globals.X_CHUNK_COUNT + " " + Globals.Y_CHUNK_COUNT + " " + Globals.CHUNK_SIZE + "\n");
 			for (Chunk chunk : Main.world.chunks) {
@@ -69,14 +75,24 @@ public class SaveManager {
 						tileRegCounter++;
 					temp = temp + " " + registry.get(tile.getClass().getCanonicalName()); // TODO Maybe add Tile
 																							// metadata
+					if (tile.hasBuild()) {
+						Build build = tile.getBuild();
+						registry.putIfAbsent(build.getClass().getCanonicalName(), build.getClass().getSimpleName());
+						buildsWriter.write(build.getClass().getSimpleName() + " " + build.getPosition().realX + " "
+								+ build.getPosition().realY + " " + "\n");
+						buildCounter++;
+					}
+
 				}
 				tileWriter.write(temp.trim() + "\n");
 			}
 			tileWriter.flush();
 			tileWriter.close();
+			buildsWriter.flush();
+			buildsWriter.close();
 			System.out.println(
 					"Saved " + (Globals.X_CHUNK_COUNT * Globals.Y_CHUNK_COUNT * Globals.CHUNK_SIZE * Globals.CHUNK_SIZE)
-							+ " Tiles");
+							+ " Tiles and " + buildCounter + " Builds");
 
 			System.out.println("Saving Registry");
 			for (Entry<String, String> entry : registry.entrySet()) {
@@ -87,7 +103,6 @@ public class SaveManager {
 			System.out.println("Saved " + registry.size() + " Registry entrys");
 			System.out.println("Saved game to " + name);
 		} catch (IOException e) {
-
 			e.printStackTrace();
 		}
 
@@ -97,11 +112,14 @@ public class SaveManager {
 		File registryFile = new File("src/saves/" + name + "/reg.dat");
 		File tileFile = new File("src/saves/" + name + "/tile.dat");
 		File entityFile = new File("src/saves/" + name + "/entity.dat");
+		File buildFile = new File("src/saves/" + name + "/build.dat");
+
 		try {
 			BufferedReader registryReader = new BufferedReader(
 					new InputStreamReader(new FileInputStream(registryFile)));
 			BufferedReader tileReader = new BufferedReader(new InputStreamReader(new FileInputStream(tileFile)));
 			BufferedReader entityReader = new BufferedReader(new InputStreamReader(new FileInputStream(entityFile)));
+			BufferedReader buildReader = new BufferedReader(new InputStreamReader(new FileInputStream(buildFile)));
 
 			HashMap<String, Constructor<?>> registry = new HashMap<String, Constructor<?>>();
 			String line;
@@ -112,7 +130,7 @@ public class SaveManager {
 			}
 			System.out.println("Loaded " + registry.size() + " Registry entrys");
 
-			System.out.println("Loaded Tiles");
+			System.out.println("Loaded Tiles and Builds");
 			line = tileReader.readLine();// map size data (not used right now)
 			int chunkCounter = 0;
 			while ((line = tileReader.readLine()) != null) {
@@ -124,20 +142,37 @@ public class SaveManager {
 				}
 				chunkCounter++;
 			}
+
+			int buildCounter = 0;
+
+			while ((line = buildReader.readLine()) != null) {
+				String[] data = line.split(" ");
+				Build build = (Build) registry.get(data[0]).newInstance();
+				Tile tile = Main.world.getTile(Integer.parseInt(data[1]), Integer.parseInt(data[2]));
+				tile.setBuild(build);
+				buildCounter++;
+				// if (data.length > 3) meta
+			}
+
 			System.out.println("Loaded "
 					+ (Globals.X_CHUNK_COUNT * Globals.Y_CHUNK_COUNT * Globals.CHUNK_SIZE * Globals.CHUNK_SIZE)
-					+ " Tiles");
+					+ " Tiles and " + buildCounter + " Builds");
+
+			int entityCounter = 0;
 
 			System.out.println("Loading Entitys");
-			while ((line = entityReader.readLine()) != null) {
-				String[] data = line.split(" ");
-				Entity entity = Main.world.addEntity((Entity) registry.get(data[0]).newInstance(),
-						Integer.parseInt(data[1]), Integer.parseInt(data[2]));
-				if (data.length > 3)
-					entity.metadata = new JSON(data[3]);
-			}
-			System.out.println("Loaded Entitys");
+			if (entityReader.ready())
+				while ((line = entityReader.readLine()) != null) {
+					String[] data = line.split(" ");
+					Entity entity = Main.world.addEntity((Entity) registry.get(data[0]).newInstance(),
+							Integer.parseInt(data[1]), Integer.parseInt(data[2]));
+					entityCounter++;
+					// if (data.length > 3) meta
 
+				}
+			System.out.println("Loaded " + entityCounter + " Entitys");
+
+			buildReader.close();
 			registryReader.close();
 			tileReader.close();
 			entityReader.close();

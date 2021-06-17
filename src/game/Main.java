@@ -24,7 +24,10 @@ public class Main {
 		rend = new Renderer(window);
 
 		SaveManager.loadGame("save");
-		
+
+	//	world.addEntity(new Pig(), 100, 100)
+
+		;
 		long wait = 1000 / Globals.TPS;
 
 		while (true) {
