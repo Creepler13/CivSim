@@ -2,15 +2,15 @@ package game.models.entitys;
 
 import java.awt.Image;
 
+import game.objectSupers.Model;
 import game.registrys.ImageRegistry;
 import game.visualls.ImageType;
-import game.world.Model;
 
 public class PigModel implements Model {
 
 	@Override
 	public Image getImage() {
-		return ImageRegistry.getImage(ImageType.ENTITY, "pig");
+		return ImageRegistry.getImage(ImageType.ENTITY, "pig", "pig1");
 	}
 
 	@Override

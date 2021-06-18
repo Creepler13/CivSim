@@ -60,4 +60,8 @@ public class Position {
 		return new Position(x * Globals.REAL_CHUNK_SIZE, y * Globals.REAL_CHUNK_SIZE);
 	}
 
+	public static Position fresh() {
+		return new Position(0, 0);
+	}
+
 }

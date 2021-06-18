@@ -1,13 +1,10 @@
 package game.objectSupers;
 
-import game.world.Model;
-import game.world.Position;
 import game.world.World;
 
-public abstract class Tile {
+public abstract class Tile extends GameObject {
 
 	private Build build;
-	private Position position;
 
 	public abstract Model getModel();
 
@@ -28,14 +25,6 @@ public abstract class Tile {
 		this.build.setPosition(getPosition());
 	}
 
-	public Position getPosition() {
-		return this.position;
-	}
-
-	public void setPosition(Position position) {
-		this.position = position;
-	}
-
 	public void setTileEntity(TileEntity tileEntity) {
 		this.tileEntiy = tileEntity;
 	}
@@ -49,16 +38,4 @@ public abstract class Tile {
 	public boolean hasTileEntity() {
 		return tileEntiy != null;
 	}
-
-	public void setPosition(int x, int y) {
-		if (this.position == null) {
-			this.position = new Position(x, y);
-			return;
-		}
-		this.position.setPosition(x, y);
-	}
-
-	public Tile() {
-	}
-
 }

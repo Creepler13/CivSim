@@ -1,7 +1,6 @@
 package game.objectSupers;
 
 import game.inventorys.AnimalInventory;
-import game.world.Model;
 import game.world.World;
 
 public abstract class Animal extends Entity {

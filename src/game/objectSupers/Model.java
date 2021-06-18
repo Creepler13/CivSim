@@ -1,4 +1,4 @@
-package game.world;
+package game.objectSupers;
 
 import java.awt.Image;
 
@@ -13,10 +13,9 @@ public interface Model {
 	public abstract int getInGameWidth();
 
 	public abstract int getInGameHeight();
-	
+
 	public abstract int getXOffset();
 
 	public abstract int getYOffset();
 
-	
 }

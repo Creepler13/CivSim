@@ -2,7 +2,7 @@ package game.objects.items;
 
 import game.models.items.LootItemModel;
 import game.objectSupers.Item;
-import game.world.Model;
+import game.objectSupers.Model;
 
 public class Bone extends Item {
 

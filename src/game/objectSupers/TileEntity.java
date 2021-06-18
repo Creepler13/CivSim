@@ -1,7 +1,6 @@
 package game.objectSupers;
 
 import game.Main;
-import game.world.Model;
 import game.world.Position;
 
 public abstract class TileEntity extends Entity {

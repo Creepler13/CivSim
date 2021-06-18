@@ -20,9 +20,8 @@ public class ImageRegistry {
 				for (File fileToImg : dir.listFiles()) {
 					if (fileToImg.isDirectory()) {
 						for (File dirToImg : fileToImg.listFiles()) {
-							images.put(
-									dir.getName() + ":" + fileToImg.getName() + dirToImg.getName().replace(".png", ""),
-									ImageIO.read(dirToImg));
+							images.put(dir.getName() + ":" + fileToImg.getName() + "/"
+									+ dirToImg.getName().replace(".png", ""), ImageIO.read(dirToImg));
 						}
 					} else {
 						images.put(dir.getName() + ":" + fileToImg.getName().replace(".png", ""),
@@ -38,6 +37,18 @@ public class ImageRegistry {
 
 	public static Image getImage(ImageType type, String name) {
 		return images.get(type.toString() + ":" + name);
+	}
+
+	public static Image getImage(ImageType type, String dir, String name) {
+		return images.get(type.toString() + ":" + dir + "/" + name);
+	}
+
+	public static String listImages() {
+		String s = "";
+		for (String key : images.keySet()) {
+			s = s + key + ".png\n";
+		}
+		return s;
 	}
 
 }

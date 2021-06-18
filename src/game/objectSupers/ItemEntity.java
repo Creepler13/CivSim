@@ -1,6 +1,5 @@
 package game.objectSupers;
 
-import game.world.Model;
 import game.world.World;
 
 public class ItemEntity extends Entity {

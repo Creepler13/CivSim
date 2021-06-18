@@ -1,7 +1,5 @@
 package game.objectSupers;
 
-import game.world.Model;
-
 public abstract class Item {
 
 	public abstract int getStackLimit();

@@ -3,9 +3,9 @@ package game.models.tiles;
 import java.awt.Image;
 
 import game.Globals;
+import game.objectSupers.Model;
 import game.registrys.ImageRegistry;
 import game.visualls.ImageType;
-import game.world.Model;
 
 public class GroundTileModel implements Model {
 

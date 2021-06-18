@@ -3,9 +3,9 @@ package game.models.items;
 import java.awt.Image;
 
 import game.objectSupers.Item;
+import game.objectSupers.Model;
 import game.registrys.ImageRegistry;
 import game.visualls.ImageType;
-import game.world.Model;
 
 public class LootItemModel implements Model {
 

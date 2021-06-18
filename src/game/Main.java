@@ -1,7 +1,6 @@
 package game;
 
 import game.controls.FrameEvent;
-import game.objects.entitys.animals.Pig;
 import game.registrys.ImageRegistry;
 import game.registrys.ObjectRegistry;
 import game.visualls.Renderer;
@@ -25,9 +24,11 @@ public class Main {
 
 		SaveManager.loadGame("save");
 
-	//	world.addEntity(new Pig(), 100, 100)
+		System.out.println(ImageRegistry.listImages());
 
-		;
+		//world.addEntity(new Pig(), 100, 100);
+		
+		
 		long wait = 1000 / Globals.TPS;
 
 		while (true) {

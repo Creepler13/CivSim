@@ -7,9 +7,9 @@ import java.awt.image.BufferedImage;
 
 import game.Globals;
 import game.objectSupers.Entity;
+import game.objectSupers.Model;
 import game.objectSupers.Tile;
 import game.world.Chunk;
-import game.world.Model;
 
 public class Renderer {
 
@@ -69,7 +69,7 @@ public class Renderer {
 						this.window.camera.pos.chunkY + yy);
 
 				for (Entity entity : chunk.entitys) {
-					
+
 					Model model = entity.getModel();
 					if (model == null)
 						continue;
@@ -77,9 +77,9 @@ public class Renderer {
 					int entityOnCameraX = entity.getPosition().realX - this.window.camera.pos.realX;
 					int entityOnCameraY = entity.getPosition().realY - this.window.camera.pos.realY;
 
-					g.drawImage(model.getImage(), entityOnCameraX, entityOnCameraY,
-							entityOnCameraX + model.getInGameWidth(), entityOnCameraY + model.getInGameHeight(), 0, 0,
-							model.getWidth(), model.getHeight(), null);
+					g.drawImage(model.getImage(), entityOnCameraX + model.getXOffset(),
+							entityOnCameraY + model.getYOffset(), entityOnCameraX + model.getInGameWidth(),
+							entityOnCameraY + model.getInGameHeight(), 0, 0, model.getWidth(), model.getHeight(), null);
 				}
 			}
 		}

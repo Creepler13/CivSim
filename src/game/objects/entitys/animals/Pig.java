@@ -4,7 +4,7 @@ import game.models.entitys.PigModel;
 import game.objectSupers.Animal;
 import game.objectSupers.ItemEntity;
 import game.objectSupers.ItemStack;
-import game.world.Model;
+import game.objectSupers.Model;
 import game.world.World;
 
 public class Pig extends Animal {
