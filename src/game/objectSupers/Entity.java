@@ -1,13 +1,12 @@
 package game.objectSupers;
 
 import game.world.Position;
-import game.world.World;
 
 public abstract class Entity extends GameObject {
 
 	public abstract Model getModel();
 
-	public abstract void onTick(World world);
+	public abstract void onTick();
 
 	public abstract void apply(ItemStack stack);
 

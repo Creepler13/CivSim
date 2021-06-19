@@ -2,11 +2,9 @@ package game.controls;
 
 import java.awt.event.MouseEvent;
 
-import game.visualls.Window;
-
 public class Controlls {
 
-	public Controlls(Window window) {
+	public Controlls() {
 
 	}
 
@@ -15,7 +13,7 @@ public class Controlls {
 	}
 
 	public void onMouseMoved(MouseEvent e) {
-	
+
 	}
 
 }

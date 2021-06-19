@@ -10,13 +10,11 @@ import game.objects.tiles.GroundTile;
 public class Chunk {
 
 	private Position position;
-	public World world;
 
 	public Tile[] tiles = new Tile[Globals.CHUNK_SIZE * Globals.CHUNK_SIZE];
 	public ArrayList<Entity> entitys = new ArrayList<>();
 
-	public Chunk(int x, int y, World world) {
-		this.world = world;
+	public Chunk(int x, int y) {
 		this.position = new Position(x, y);
 
 		for (int i = 0; i < Globals.CHUNK_SIZE; i++) {

@@ -1,7 +1,6 @@
 package game.objectSupers;
 
 import game.inventorys.AnimalInventory;
-import game.world.World;
 
 public abstract class Animal extends Entity {
 
@@ -11,7 +10,7 @@ public abstract class Animal extends Entity {
 	public abstract Model getModel();
 
 	@Override
-	public void onTick(World world) {
+	public void onTick() {
 
 	}
 

@@ -1,14 +1,12 @@
 package game.objectSupers;
 
-import game.world.World;
-
 public abstract class Tile extends GameObject {
 
 	private Build build;
 
 	public abstract Model getModel();
 
-	public abstract void onTick(World world);
+	public abstract void onTick();
 
 	public abstract Boolean canBuildOn();
 

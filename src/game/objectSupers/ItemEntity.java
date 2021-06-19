@@ -1,7 +1,5 @@
 package game.objectSupers;
 
-import game.world.World;
-
 public class ItemEntity extends Entity {
 
 	public ItemStack itemStack;
@@ -17,7 +15,7 @@ public class ItemEntity extends Entity {
 	}
 
 	@Override
-	public void onTick(World world) {
+	public void onTick() {
 	}
 
 	@Override

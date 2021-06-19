@@ -1,7 +1,6 @@
 package game.world;
 
 import game.Globals;
-import game.Main;
 import game.objectSupers.Entity;
 
 public class Position {
@@ -24,7 +23,7 @@ public class Position {
 		this.chunkX = this.realX / Globals.TILE_SIZE / Globals.CHUNK_SIZE;
 		this.chunkY = this.chunkY / Globals.TILE_SIZE / Globals.CHUNK_SIZE;
 
-		Main.world.getChunk(this.chunkX, this.chunkY).entitys.add(entity);
+		World.getChunk(this.chunkX, this.chunkY).entitys.add(entity);
 		setPosition(this.realX, this.realY);
 	}
 
@@ -38,13 +37,13 @@ public class Position {
 		this.tileY = (y - newChunkY * Globals.REAL_CHUNK_SIZE) / Globals.TILE_SIZE;
 
 		if (this.entity != null && (this.chunkX != newChunkX || this.chunkY != newChunkY)) {
-			Main.world.getChunk(Position.fromChunkPos(this.chunkX, this.chunkY)).entitys.remove(this.entity);
-			Main.world.getChunk(Position.fromChunkPos(newChunkX, newChunkY)).entitys.add(this.entity);
+			World.getChunk(Position.fromChunkPos(this.chunkX, this.chunkY)).entitys.remove(this.entity);
+			World.getChunk(Position.fromChunkPos(newChunkX, newChunkY)).entitys.add(this.entity);
 		}
 		this.chunkX = newChunkX;
 		this.chunkY = newChunkY;
 
-	};
+	}
 
 	public boolean isEntity() {
 		return this.entity != null;

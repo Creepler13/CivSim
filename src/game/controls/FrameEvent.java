@@ -15,7 +15,7 @@ public class FrameEvent implements WindowListener {
 
 	@Override
 	public void windowClosed(WindowEvent e) {
-	
+
 	}
 
 	@Override

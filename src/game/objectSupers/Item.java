@@ -15,7 +15,7 @@ public abstract class Item {
 
 	@Override
 	public boolean equals(Object obj) {
-		System.out.println(obj.getClass() + "  " + this.getClass());
+		System.out.println(obj.getClass() + " " + this.getClass()); //$NON-NLS-1$
 		if (obj.getClass() == this.getClass())
 			return true;
 		return false;

@@ -9,10 +9,6 @@ import game.world.World;
 
 public class Pig extends Animal {
 
-	public Pig() {
-
-	}
-
 	public Model model = new PigModel();
 
 	@Override
@@ -21,22 +17,21 @@ public class Pig extends Animal {
 	}
 
 	@Override
-	public void onTick(World world) {
+	public void onTick() {
 		this.setPosition(getPosition().realX + 1, getPosition().realY);
 		if (this.getPosition().realX == 150)
-			onDeath(world);
+			onDeath();
 	}
 
-	public void onDeath(World world) {
-		world.removeEntity(this);
+	public void onDeath() {
+		World.removeEntity(this);
 		for (int i = 0; i < inventory.getSlotCount(); i++) {
 			ItemStack stack = inventory.getItem(i);
 			if (stack != null) {
-				world.addEntity(new ItemEntity(stack), getPosition());
+				World.addEntity(new ItemEntity(stack), getPosition());
 			}
 		}
 
-		
 	}
 
 	@Override

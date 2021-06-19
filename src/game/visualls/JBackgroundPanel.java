@@ -7,7 +7,7 @@ import java.awt.Image;
 import javax.swing.JPanel;
 
 /**
- * 
+ *
  * @author JustAnotherJavaProgrammer
  *
  */
@@ -21,6 +21,7 @@ public class JBackgroundPanel extends JPanel {
 	public static final int DISTORT_IMAGE = 2;
 	private int backgroundType = FULL_IMAGE;
 
+	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		if (background != null) {
@@ -73,6 +74,7 @@ public class JBackgroundPanel extends JPanel {
 		background = backgroundImage;
 		EventQueue.invokeLater(new Runnable() {
 
+			@Override
 			public void run() {
 				repaint();
 			}

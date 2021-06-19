@@ -1,7 +1,7 @@
 package game.objectSupers;
 
-import game.Main;
 import game.world.Position;
+import game.world.World;
 
 public abstract class TileEntity extends Entity {
 
@@ -13,14 +13,14 @@ public abstract class TileEntity extends Entity {
 	@Override
 	public void setPosition(int x, int y) {
 		super.setPosition(x, y);
-		tile = Main.world.getTile(getPosition());
+		tile = World.getTile(getPosition());
 		tile.setTileEntity(this);
 	}
 
 	@Override
 	public void setPosition(Position position) {
 		super.setPosition(position);
-		tile = Main.world.getTile(getPosition());
+		tile = World.getTile(getPosition());
 		tile.setTileEntity(this);
 	}
 

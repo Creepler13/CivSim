@@ -32,7 +32,7 @@ public abstract class Inventory {
 
 	public ItemStack getItem(int index) {
 		return items[index];
-	};
+	}
 
 	@Override
 	public String toString() {

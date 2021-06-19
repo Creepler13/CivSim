@@ -12,19 +12,19 @@ public class ItemStack {
 
 	public int getCount() {
 		return this.count;
-	};
+	}
 
 	public int getStackLimit() {
 		return this.item.getStackLimit();
-	};
-	
+	}
+
 	public Item getItem() {
 		return this.item;
 	}
 
 	public void setCount(int i) {
 		this.count = i;
-	};
+	}
 
 	@Override
 	public String toString() {
