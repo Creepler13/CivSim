@@ -15,6 +15,7 @@ import java.util.Map.Entry;
 import game.objectSupers.Build;
 import game.objectSupers.Entity;
 import game.objectSupers.Tile;
+import game.visualls.Window;
 import game.world.Chunk;
 import game.world.Position;
 import game.world.World;
@@ -36,11 +37,14 @@ public class SaveManager {
 
 		try {
 			File registryFile = new File("src/saves/" + name + "/reg.dat");
+			File settingsFile = new File("src/saves/" + name + "/settings.dat");
 			File tileFile = new File("src/saves/" + name + "/tile.dat");
 			File entityFile = new File("src/saves/" + name + "/entity.dat");
 			File buildsFile = new File("src/saves/" + name + "/build.dat");
 			entityFile.delete();
 			entityFile.createNewFile();
+			settingsFile.delete();
+			settingsFile.createNewFile();
 			buildsFile.delete();
 			buildsFile.createNewFile();
 			tileFile.delete();
@@ -48,6 +52,7 @@ public class SaveManager {
 			registryFile.delete();
 			registryFile.createNewFile();
 			FileWriter entitysWriter = new FileWriter(entityFile);
+			FileWriter settingsWriter = new FileWriter(settingsFile);
 			FileWriter tileWriter = new FileWriter(tileFile);
 			FileWriter registryWriter = new FileWriter(registryFile);
 			FileWriter buildsWriter = new FileWriter(buildsFile);
@@ -103,6 +108,13 @@ public class SaveManager {
 			registryWriter.close();
 			System.out.println("Saved " + registry.size() + " Registry entrys");
 			System.out.println("Saved game to " + name);
+
+			System.out.println("Saving Settings");
+			settingsWriter.write(Window.camera.pos.realX + " " + Window.camera.pos.realY + "\n");
+
+			System.out.println("Saved Settings");
+			settingsWriter.flush();
+			settingsWriter.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -114,6 +126,7 @@ public class SaveManager {
 		File tileFile = new File("src/saves/" + name + "/tile.dat");
 		File entityFile = new File("src/saves/" + name + "/entity.dat");
 		File buildFile = new File("src/saves/" + name + "/build.dat");
+		File settingsFile = new File("src/saves/" + name + "/settings.dat");
 
 		try {
 			BufferedReader registryReader = new BufferedReader(
@@ -121,6 +134,8 @@ public class SaveManager {
 			BufferedReader tileReader = new BufferedReader(new InputStreamReader(new FileInputStream(tileFile)));
 			BufferedReader entityReader = new BufferedReader(new InputStreamReader(new FileInputStream(entityFile)));
 			BufferedReader buildReader = new BufferedReader(new InputStreamReader(new FileInputStream(buildFile)));
+			BufferedReader settingsReader = new BufferedReader(
+					new InputStreamReader(new FileInputStream(settingsFile)));
 
 			HashMap<String, Constructor<?>> registry = new HashMap<>();
 			String line;
@@ -174,6 +189,14 @@ public class SaveManager {
 				}
 			System.out.println("Loaded " + entityCounter + " Entitys");
 
+			System.out.println("Loading Settigns");
+			line = settingsReader.readLine();
+			String[] lineparts = line.split(" ");
+			Window.camera.pos.setPosition(Integer.parseInt(lineparts[0]), Integer.parseInt(lineparts[1]));
+
+			System.out.println("Loaded Settigns");
+
+			settingsReader.close();
 			buildReader.close();
 			registryReader.close();
 			tileReader.close();

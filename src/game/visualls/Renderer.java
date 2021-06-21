@@ -2,6 +2,7 @@ package game.visualls;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -87,7 +88,7 @@ public class Renderer {
 
 	}
 
-	private static ArrayList<UI> openUIs = new ArrayList<>();
+	public static ArrayList<UI> openUIs = new ArrayList<>();
 
 	public static UI openUI(UI ui) {
 		openUIs.add(ui);
@@ -101,7 +102,8 @@ public class Renderer {
 
 	private static void renderUI(Graphics2D g) {
 		for (UI ui : openUIs) {
-			ui.drawUI(g);
+			g.drawImage(ui.getUI(), ui.getX(), ui.getY(), ui.getWidth(), ui.getHeight(), 0, 0, ui.getWidth(),
+					ui.getHeight(), null);
 		}
 	}
 

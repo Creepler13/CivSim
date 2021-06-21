@@ -4,7 +4,7 @@ import game.world.Position;
 
 public class Camera {
 
-	public Position pos = new Position(000, 00);
+	public Position pos = new Position(0, 0);
 	public double zoom = 1;
 	private int width = 960, height = 540;
 

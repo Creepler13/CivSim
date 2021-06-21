@@ -1,5 +1,7 @@
 package game.objectSupers;
 
+import java.awt.event.MouseEvent;
+
 import game.world.Position;
 
 public class GameObject {
@@ -30,6 +32,21 @@ public class GameObject {
 
 	public void setPosition(int x, int y) {
 		this.position.setPosition(x, y);
+	}
+
+	public void onMouseClicked(MouseEvent e) {
+	}
+
+	public void onMousePressed(MouseEvent e) {
+	}
+
+	public void onMouseReleased(MouseEvent e) {
+	}
+
+	public void onMouseEntered(MouseEvent e) {
+	}
+
+	public void onMouseExited(MouseEvent e) {
 	}
 
 }
