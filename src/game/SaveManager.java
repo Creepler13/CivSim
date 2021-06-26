@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import game.controls.KeyEventListener;
 import game.objectSupers.Build;
 import game.objectSupers.Entity;
 import game.objectSupers.Tile;
@@ -111,8 +112,9 @@ public class SaveManager {
 
 			System.out.println("Saving Settings");
 			settingsWriter.write(Window.camera.pos.realX + " " + Window.camera.pos.realY + "\n");
-
+			settingsWriter.write(KeyEventListener.stringify() + "\n");
 			System.out.println("Saved Settings");
+
 			settingsWriter.flush();
 			settingsWriter.close();
 		} catch (IOException e) {
@@ -193,6 +195,8 @@ public class SaveManager {
 			line = settingsReader.readLine();
 			String[] lineparts = line.split(" ");
 			Window.camera.pos.setPosition(Integer.parseInt(lineparts[0]), Integer.parseInt(lineparts[1]));
+			line = settingsReader.readLine();
+			KeyEventListener.loadBindings(line.trim());
 
 			System.out.println("Loaded Settigns");
 

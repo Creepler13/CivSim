@@ -67,4 +67,27 @@ public class KeyEventListener implements KeyListener {
 		keyBindings.get(oldKeyCode).remove(bindingName);
 	}
 
+	public static void loadBindings(String data) {
+
+		String[] split = data.split(" ");
+		if (split.length != 0)
+			for (String s : split) {
+				String[] sSplit = s.split(":");
+				System.out.println(sSplit.length);
+				if (sSplit.length > 1)
+					changeBinding(sSplit[0], Integer.parseInt(sSplit[1]));
+			}
+	}
+
+	public static String stringify() {
+		String s = "";
+		for (Entry<Integer, HashMap<String, KeyEventHandler>> entry : keyBindings.entrySet()) {
+			for (Entry<String, KeyEventHandler> entry2 : entry.getValue().entrySet()) {
+				s = s + entry2.getKey() + ":" + entry.getKey() + " ";
+			}
+		}
+
+		return s;
+	}
+
 }
