@@ -6,6 +6,7 @@ import java.awt.event.MouseListener;
 import game.Globals;
 import game.objectSupers.Entity;
 import game.objectSupers.GameObject;
+import game.objectSupers.Tile;
 import game.visualls.Renderer;
 import game.visualls.UI;
 import game.visualls.Window;
@@ -17,11 +18,14 @@ public class GameObjectMouseEventHandler implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if (!isOnUI(e)) {
-			GameObject gm = getGameObject(e);
-			if (gm != null)
-				gm.onMouseClicked(e);
+		UI ui = isOnUI(e);
+		if (ui != null) {
+			ui.onMouseClicked(e);
+			return;
 		}
+		GameObject gm = getGameObject(e);
+		if (gm != null)
+			gm.onMouseClicked(e);
 	}
 
 	@Override
@@ -36,21 +40,26 @@ public class GameObjectMouseEventHandler implements MouseListener {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		if (!isOnUI(e)) {
-			GameObject gm = getGameObject(e);
-			if (gm != null)
-				gm.onMousePressed(e);
+		UI ui = isOnUI(e);
+		if (ui != null) {
+			ui.onMousePressed(e);
+			return;
 		}
+		GameObject gm = getGameObject(e);
+		if (gm != null)
+			gm.onMousePressed(e);
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		UI ui = isOnUI(e);
-		
-			GameObject gm = getGameObject(e);
-			if (gm != null)
-				gm.onMouseReleased(e);
+		if (ui != null) {
+			ui.onMouseReleased(e);
+			return;
 		}
+		GameObject gm = getGameObject(e);
+		if (gm != null)
+			gm.onMouseClicked(e);
 	}
 
 	private UI isOnUI(MouseEvent e) {
@@ -67,31 +76,44 @@ public class GameObjectMouseEventHandler implements MouseListener {
 
 	private GameObject getGameObject(MouseEvent e) {
 
-		int xchunks = Window.camera.getWidth() / Globals.REAL_CHUNK_SIZE + 2;
-		int ychunks = Window.camera.getHeight() / Globals.REAL_CHUNK_SIZE + 2;
-
 		Position cameraPosition = Window.camera.pos;
 
-		for (int x = 0; x < xchunks; x++) {
-			for (int y = 0; y < ychunks; y++) {
+		Chunk chunk = World.getChunk(
+				(int) (cameraPosition.chunkX + e.getX() / Window.panel.scale / Globals.REAL_CHUNK_SIZE),
+				(int) (cameraPosition.chunkY + e.getY() / Window.panel.scale / Globals.REAL_CHUNK_SIZE));
 
-				Chunk chunk = World.getChunk(cameraPosition.chunkX + x, cameraPosition.chunkY + y);
+		for (int i = chunk.entitys.size() - 1; i > -1; i--) {
+			Entity entity = chunk.entitys.get(i);
+			Position entityPosition = entity.getPosition();
 
-				for (int i = chunk.entitys.size() - 1; i < chunk.entitys.size(); i--) {
-					Entity entity = chunk.entitys.get(i);
-					Position entityPosition = entity.getPosition();
-					
-					int xOnCamera = entityPosition.realX-cameraPosition.realX;
-					int yOnCamera = entityPosition.realY-cameraPosition.realY;
-					int widthOnCamera = entity.getModel().getInGameWidth();
-					int heightOnCamera = entity.getModel().getInGameHeight();
-					
-					if (e.getX() >= x && e.getY() >= y && e.getX() < x + width && e.getY() < y + height)
+			int xOnCamera = (int) ((entityPosition.realX - cameraPosition.realX) * Window.panel.scale);
+			int yOnCamera = (int) ((entityPosition.realY - cameraPosition.realY) * Window.panel.scale);
+			int widthOnCamera = (int) (entity.getModel().getInGameWidth() * Window.panel.scale);
+			int heightOnCamera = (int) (entity.getModel().getInGameHeight() * Window.panel.scale);
+			// scaled
+			// bacause of
+			// jBackgroundPanel and zoom its complicated;
 
-				}
-
+			if (e.getX() >= xOnCamera && e.getY() >= yOnCamera && e.getX() < xOnCamera + widthOnCamera
+					&& e.getY() < yOnCamera + heightOnCamera) {
+				return entity;
 			}
+
 		}
+
+		for (Tile tile : chunk.tiles) {
+			int xOnCamera = (int) ((tile.getPosition().realX - cameraPosition.realX) * Window.panel.scale);
+			int yOnCamera = (int) ((tile.getPosition().realY - cameraPosition.realY) * Window.panel.scale);
+			int widthHeigthOnCamera = (int) (Globals.TILE_SIZE * Window.panel.scale);
+
+			if (e.getX() >= xOnCamera && e.getY() >= yOnCamera && e.getX() < xOnCamera + widthHeigthOnCamera
+					&& e.getY() < yOnCamera + widthHeigthOnCamera) {
+				return tile;
+			}
+
+		}
+
+		return null;
 
 	}
 

@@ -1,10 +1,14 @@
 package game.objects.entitys.animals;
 
+import java.awt.event.MouseEvent;
+
 import game.models.entitys.PigModel;
 import game.objectSupers.Animal;
 import game.objectSupers.ItemEntity;
 import game.objectSupers.ItemStack;
 import game.objectSupers.Model;
+import game.visualls.Renderer;
+import game.visualls.ui.EntityDataUI;
 import game.world.World;
 
 public class Pig extends Animal {
@@ -19,8 +23,7 @@ public class Pig extends Animal {
 	@Override
 	public void onTick() {
 		this.setPosition(getPosition().realX + 1, getPosition().realY);
-		if (this.getPosition().realX == 150)
-			onDeath();
+
 	}
 
 	public void onDeath() {
@@ -37,6 +40,12 @@ public class Pig extends Animal {
 	@Override
 	public void apply(ItemStack stack) {
 
+	}
+
+	@Override
+	public void onMouseClicked(MouseEvent e) {
+		System.out.println("PIG");
+		Renderer.openUI(new EntityDataUI(this));
 	}
 
 }

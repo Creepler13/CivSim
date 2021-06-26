@@ -1,9 +1,7 @@
 package game;
 
 import game.controls.FrameEvent;
-import game.objects.entitys.animals.Pig;
 import game.registrys.ImageRegistry;
-import game.registrys.ObjectRegistry;
 import game.visualls.Renderer;
 import game.visualls.Window;
 import game.world.World;
@@ -11,7 +9,6 @@ import game.world.World;
 public class Main {
 
 	public static void main(String[] args) {
-		ObjectRegistry.loadObjects();
 		ImageRegistry.loadImages();
 		World.init(100, 100);
 		Window.init();
@@ -19,22 +16,41 @@ public class Main {
 
 		SaveManager.loadGame("save");
 
-		System.out.println(ImageRegistry.listImages());
+		// World.addEntity(new Pig(), 100, 100);
 
-		World.addEntity(new Pig(), 100, 100);
+		long tickWait = 1000 / Globals.TPS;
+		long frameWait = 1000 / Globals.FPS;
 
-		long wait = 1000 / Globals.TPS;
-
-		while (true) {
-			try {
-				Thread.sleep(wait);
-				World.tick();
-				Renderer.update();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		Thread gameThread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				while (true) {
+					try {
+						Thread.sleep(tickWait);
+						World.tick();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
 			}
-		}
+		});
+
+		Thread renderThread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				while (true) {
+					try {
+						Thread.sleep(frameWait);
+						Renderer.update();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		});
+
+		gameThread.start();
+		renderThread.start();
 
 	}
 

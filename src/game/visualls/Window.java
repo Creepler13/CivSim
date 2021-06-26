@@ -25,6 +25,8 @@ public class Window {
 		frame.add(panel);
 		frame.setVisible(true);
 
+		panel.grabFocus();
+
 		C = new Controlls();
 		CC = new CameraControlls();
 

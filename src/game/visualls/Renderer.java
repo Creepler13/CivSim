@@ -2,7 +2,6 @@ package game.visualls;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -105,6 +104,10 @@ public class Renderer {
 			g.drawImage(ui.getUI(), ui.getX(), ui.getY(), ui.getWidth(), ui.getHeight(), 0, 0, ui.getWidth(),
 					ui.getHeight(), null);
 		}
+	}
+
+	public static int scaleToWindow(int i) {
+		return (int) (i * Window.panel.scale);
 	}
 
 }

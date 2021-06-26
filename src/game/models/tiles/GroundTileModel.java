@@ -11,7 +11,15 @@ public class GroundTileModel implements Model {
 
 	@Override
 	public Image getImage() {
-		return ImageRegistry.getImage(ImageType.TILE, "ground");
+
+		return pink ? ImageRegistry.getImage(ImageType.ENTITY, "pig", "pig1")
+				: ImageRegistry.getImage(ImageType.TILE, "ground");
+	}
+
+	boolean pink = false;
+
+	public void changeToPink() {
+		pink = true;
 	}
 
 	@Override

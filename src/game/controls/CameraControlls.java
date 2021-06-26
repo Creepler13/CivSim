@@ -15,6 +15,8 @@ public class CameraControlls {
 		Window.panel.addMouseMotionListener(new MouseMoved(this, Window.C));
 		Window.panel.addMouseListener(new MouseButton(this));
 		Window.panel.addMouseWheelListener(new MouseWheel(this));
+		Window.panel.addMouseListener(new GameObjectMouseEventHandler());
+		Window.panel.addKeyListener(new KeyEventListener());
 	}
 
 	private int lastX = 0, lastY = 0;

@@ -21,6 +21,11 @@ public class JBackgroundPanel extends JPanel {
 	public static final int DISTORT_IMAGE = 2;
 	private int backgroundType = FULL_IMAGE;
 
+	public int scaledWidth = 0;
+	public int scaledHeight = 0;
+
+	public double scale;
+
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -36,7 +41,7 @@ public class JBackgroundPanel extends JPanel {
 	}
 
 	private void drawImage(Image image, Graphics g) {
-		double scale;
+
 		switch (backgroundType) {
 		case 0:
 			scale = (double) (this.getHeight()) / (double) (image.getHeight(null));
@@ -48,8 +53,10 @@ public class JBackgroundPanel extends JPanel {
 			// (int) ((getHeight() - (image.getHeight(null) * scale)) / 2), (int)
 			// (image.getWidth(null) * scale),
 			// (int) (image.getHeight(null) * scale), getBackground(), null);
-			g.drawImage(image, 0, 0, (int) (image.getWidth(null) * scale), (int) (image.getHeight(null) * scale),
-					getBackground(), null);
+			scaledWidth = (int) (image.getWidth(null) * scale);
+			scaledHeight = (int) (image.getHeight(null) * scale);
+
+			g.drawImage(image, 0, 0, scaledWidth, scaledHeight, getBackground(), null);
 			break;
 		case 1:
 			scale = (double) (this.getHeight()) / (double) (image.getHeight(null));
@@ -61,8 +68,10 @@ public class JBackgroundPanel extends JPanel {
 			// (image.getWidth(null) * scale),
 			// (int) (image.getHeight(null) * scale), getBackground(), null);
 
-			g.drawImage(image, 0, 0, (int) (image.getWidth(null) * scale), (int) (image.getHeight(null) * scale),
-					getBackground(), null);
+			scaledWidth = (int) (image.getWidth(null) * scale);
+			scaledHeight = (int) (image.getHeight(null) * scale);
+
+			g.drawImage(image, 0, 0, scaledWidth, scaledHeight, getBackground(), null);
 			break;
 		default:
 			g.drawImage(image, 0, 0, getWidth(), getHeight(), getBackground(), null);
