@@ -8,8 +8,9 @@ import game.objectSupers.Entity;
 import game.objectSupers.GameObject;
 import game.objectSupers.Tile;
 import game.visualls.Renderer;
-import game.visualls.UI;
 import game.visualls.Window;
+import game.visualls.ui.uiComponents.UI;
+import game.visualls.ui.uiComponents.UIComponent;
 import game.world.Chunk;
 import game.world.Position;
 import game.world.World;
@@ -20,12 +21,13 @@ public class GameObjectMouseEventHandler implements MouseListener {
 	public void mouseClicked(MouseEvent e) {
 		UI ui = isOnUI(e);
 		if (ui != null) {
-			ui.onMouseClicked(e);
+			ui.onMouseClicked(e, getUIComponent(ui, e));
 			return;
 		}
 		GameObject gm = getGameObject(e);
 		if (gm != null)
 			gm.onMouseClicked(e);
+
 	}
 
 	@Override
@@ -42,7 +44,7 @@ public class GameObjectMouseEventHandler implements MouseListener {
 	public void mousePressed(MouseEvent e) {
 		UI ui = isOnUI(e);
 		if (ui != null) {
-			ui.onMousePressed(e);
+			ui.onMousePressed(e, getUIComponent(ui, e));
 			return;
 		}
 		GameObject gm = getGameObject(e);
@@ -54,12 +56,14 @@ public class GameObjectMouseEventHandler implements MouseListener {
 	public void mouseReleased(MouseEvent e) {
 		UI ui = isOnUI(e);
 		if (ui != null) {
-			ui.onMouseReleased(e);
+			ui.onMouseReleased(e, getUIComponent(ui, e));
 			return;
 		}
 		GameObject gm = getGameObject(e);
-		if (gm != null)
+		if (gm != null) 
 			gm.onMouseClicked(e);
+		
+		CameraControlls.onMouseRelease(e);
 	}
 
 	private UI isOnUI(MouseEvent e) {
@@ -72,6 +76,21 @@ public class GameObjectMouseEventHandler implements MouseListener {
 				return ui;
 		}
 		return null;
+	}
+
+	private UIComponent getUIComponent(UIComponent ui, MouseEvent e) {
+
+		for (UIComponent cC : ui.getChildComponents()) {
+			int x = cC.getX();
+			int y = cC.getY();
+			int width = cC.getWidth();
+			int height = cC.getHeight();
+			if (e.getX() >= x && e.getX() < x + width && e.getY() >= y && e.getY() < y + height) {
+				return getUIComponent(ui, e);
+			}
+		}
+
+		return ui;
 	}
 
 	private GameObject getGameObject(MouseEvent e) {

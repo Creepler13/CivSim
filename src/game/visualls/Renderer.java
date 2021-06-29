@@ -10,6 +10,8 @@ import game.Globals;
 import game.objectSupers.Entity;
 import game.objectSupers.Model;
 import game.objectSupers.Tile;
+import game.visualls.ui.uiComponents.UI;
+import game.visualls.ui.uiComponents.UIComponent;
 import game.world.Chunk;
 import game.world.World;
 
@@ -101,9 +103,39 @@ public class Renderer {
 
 	private static void renderUI(Graphics2D g) {
 		for (UI ui : openUIs) {
-			g.drawImage(ui.getUI(), ui.getX(), ui.getY(), ui.getWidth(), ui.getHeight(), 0, 0, ui.getWidth(),
+
+			int uiX = ui.getX();
+			int uiY = ui.getY();
+
+			g.drawImage(ui.getBackground(), uiX, uiY, ui.getWidth(), ui.getHeight(), 0, 0, ui.getWidth(),
 					ui.getHeight(), null);
+
+			for (UIComponent component : ui.getAllChildComponents()) {
+				g.drawImage(component.getBackground(), uiX + component.getX(), uiY + component.getY(),
+						component.getWidth(), component.getHeight(), 0, 0, component.getWidth(), component.getHeight(),
+						null);
+			}
+
 		}
+
+		//Render Debug Overlay
+
+		g.drawImage(debugI, 0, 0, Window.panel.getWidth(), Window.panel.getHeight(), 0, 0, debugI.getWidth(),
+				debugI.getHeight(), null);
+		
+	}
+
+	private static BufferedImage debugI = new BufferedImage(Window.camera.getWidth(), Window.camera.getHeight(),
+			BufferedImage.TYPE_INT_ARGB);
+	private static Graphics2D debugG2d = (Graphics2D) debugI.getGraphics();
+
+	public static Graphics2D getDebugGraphics() {
+		return debugG2d;
+	}
+
+	public static void resetDebugGraphics() {
+		debugI = new BufferedImage(Window.camera.getWidth(), Window.camera.getHeight(), BufferedImage.TYPE_INT_ARGB);
+		debugG2d = (Graphics2D) debugI.getGraphics();
 	}
 
 	public static int scaleToWindow(int i) {

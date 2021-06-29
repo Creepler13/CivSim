@@ -6,13 +6,13 @@ import game.objectSupers.Entity;
 import game.registrys.ImageRegistry;
 import game.visualls.ImageType;
 import game.visualls.Renderer;
-import game.visualls.UI;
 import game.visualls.Window;
+import game.visualls.ui.uiComponents.UI;
 
 public class EntityDataUI extends UI {
 
 	@Override
-	public Image getUI() {
+	public Image getBackground() {
 		return ImageRegistry.getImage(ImageType.TILE, "ground");
 	}
 
