@@ -23,15 +23,10 @@ public class Renderer {
 		Graphics2D g = (Graphics2D) i.getGraphics();
 
 		renderGameObjects(g);
-		mainG.drawImage(i, 0, 0, mainI.getWidth(), mainI.getHeight(), 0, 0, i.getWidth(), i.getHeight(), null);
+		renderUI(g);
 
-		renderUI();
-		Window.panel.setBackground(mainI);
+		Window.panel.setBackground(i);
 	}
-
-	private static BufferedImage mainI = new BufferedImage(Window.camera.getWidth(), Window.camera.getHeight(),
-			BufferedImage.TYPE_INT_ARGB);
-	private static Graphics2D mainG = (Graphics2D) mainI.getGraphics();
 
 	private static void renderGameObjects(Graphics2D g) {
 
@@ -114,26 +109,33 @@ public class Renderer {
 		return ui;
 	}
 
-	private static void renderUI() {
+	private static void renderUI(Graphics2D g) {
 
 		for (UI ui : openUIs) {
 
-			int uiX = ui.getX();
-			int uiY = ui.getY();
+			int uiX = (int) (ui.getX() * Window.camera.zoom);
+			int uiY = (int) (ui.getY() * Window.camera.zoom);
+			int uiWidth = (int) (ui.getWidth() * Window.camera.zoom);
+			int uiHeigth = (int) (ui.getHeight() * Window.camera.zoom);
 
-			mainG.drawImage(ui.getBackground(), uiX, uiY, ui.getWidth(), ui.getHeight(), 0, 0, ui.getResourceWidth(),
+			g.drawImage(ui.getBackground(), uiX, uiY, uiWidth, uiHeigth, 0, 0, ui.getResourceWidth(),
 					ui.getResourceHeight(), null);
 
 			for (UIComponent component : ui.getAllChildComponents()) {
-				mainG.drawImage(component.getBackground(), uiX + component.getX(), uiY + component.getY(),
-						component.getWidth(), component.getHeight(), 0, 0, component.getResourceWidth(),
-						component.getResourceHeight(), null);
+
+				int uicompX = (int) (component.getX() * Window.camera.zoom);
+				int uicompY = (int) (component.getY() * Window.camera.zoom);
+				int uicompWidth = (int) (component.getWidth() * Window.camera.zoom);
+				int uicompHeigth = (int) (component.getHeight() * Window.camera.zoom);
+
+				g.drawImage(component.getBackground(), uiX + uicompX, uiY + uicompY, uicompWidth, uicompHeigth, 0, 0,
+						component.getResourceWidth(), component.getResourceHeight(), null);
 			}
 		}
 
 		// Render Debug Overlay
 
-		mainG.drawImage(debugI, 0, 0, Window.panel.getWidth(), Window.panel.getHeight(), 0, 0, debugI.getWidth(),
+		g.drawImage(debugI, 0, 0, Window.panel.getWidth(), Window.panel.getHeight(), 0, 0, debugI.getWidth(),
 				debugI.getHeight(), null);
 
 	}
