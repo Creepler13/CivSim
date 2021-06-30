@@ -60,9 +60,9 @@ public class GameObjectMouseEventHandler implements MouseListener {
 			return;
 		}
 		GameObject gm = getGameObject(e);
-		if (gm != null) 
+		if (gm != null)
 			gm.onMouseClicked(e);
-		
+
 		CameraControlls.onMouseRelease(e);
 	}
 
@@ -86,10 +86,10 @@ public class GameObjectMouseEventHandler implements MouseListener {
 			int width = cC.getWidth();
 			int height = cC.getHeight();
 			if (e.getX() >= x && e.getX() < x + width && e.getY() >= y && e.getY() < y + height) {
+				System.exit(0);
 				return getUIComponent(ui, e);
 			}
 		}
-
 		return ui;
 	}
 
@@ -98,17 +98,18 @@ public class GameObjectMouseEventHandler implements MouseListener {
 		Position cameraPosition = Window.camera.pos;
 
 		Chunk chunk = World.getChunk(
-				(int) (cameraPosition.chunkX + e.getX() / Window.panel.scale / Globals.REAL_CHUNK_SIZE),
-				(int) (cameraPosition.chunkY + e.getY() / Window.panel.scale / Globals.REAL_CHUNK_SIZE));
+				(int) ((cameraPosition.realX + e.getX() * Window.camera.zoom) / Globals.REAL_CHUNK_SIZE),
+				(int) ((cameraPosition.realY + e.getY() * Window.camera.zoom) / Globals.REAL_CHUNK_SIZE));
 
 		for (int i = chunk.entitys.size() - 1; i > -1; i--) {
 			Entity entity = chunk.entitys.get(i);
 			Position entityPosition = entity.getPosition();
 
-			int xOnCamera = (int) ((entityPosition.realX - cameraPosition.realX) * Window.panel.scale);
-			int yOnCamera = (int) ((entityPosition.realY - cameraPosition.realY) * Window.panel.scale);
-			int widthOnCamera = (int) (entity.getModel().getInGameWidth() * Window.panel.scale);
-			int heightOnCamera = (int) (entity.getModel().getInGameHeight() * Window.panel.scale);
+			int xOnCamera = (int) ((entityPosition.realX - cameraPosition.realX) * Window.camera.zoom);
+			int yOnCamera = (int) ((entityPosition.realY - cameraPosition.realY) * Window.camera.zoom);
+			int widthOnCamera = (int) (entity.getModel().getInGameWidth() * Window.camera.zoom);
+			int heightOnCamera = (int) (entity.getModel().getInGameHeight() * Window.camera.zoom);
+
 			// scaled
 			// bacause of
 			// jBackgroundPanel and zoom its complicated;

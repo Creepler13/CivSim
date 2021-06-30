@@ -39,6 +39,10 @@ public abstract class UIComponent {
 
 	public abstract int getHeight();
 
+	public abstract int getResourceWidth();
+
+	public abstract int getResourceHeight();
+
 	public void onMouseClicked(MouseEvent e, UIComponent comp) {
 
 	}
@@ -56,6 +60,14 @@ public abstract class UIComponent {
 	}
 
 	public void onMouseExited(MouseEvent e, UIComponent comp) {
+
+	}
+
+	public void onUIClosed(UI ui) {
+
+	}
+
+	public void onUIOpened(UI ui) {
 
 	}
 

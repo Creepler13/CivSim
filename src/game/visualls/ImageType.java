@@ -2,7 +2,7 @@ package game.visualls;
 
 public enum ImageType {
 
-	BUILD("builds"), ENTITY("entitys"), TILE("tiles"), ITEM("items");
+	BUILD("builds"), ENTITY("entitys"), TILE("tiles"), ITEM("items"), UI("ui");
 
 	private String s;
 

@@ -21,12 +21,10 @@ public class CameraControlls {
 
 	private static int lastY = 0;
 
-	 static Boolean start = true;
+	static Boolean start = true;
 
 	public static boolean enableMapDrag = true;
 
-	
-	
 	public static void onMouseRelease(MouseEvent e) {
 		if (enableMapDrag)
 			start = true;

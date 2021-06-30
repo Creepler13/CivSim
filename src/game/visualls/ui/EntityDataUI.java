@@ -46,4 +46,16 @@ public class EntityDataUI extends UI {
 		return Renderer.scaleToWindow(entity.getPosition().realY - Window.camera.pos.realY);
 	}
 
+	@Override
+	public int getResourceWidth() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getResourceHeight() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

@@ -23,10 +23,15 @@ public class Renderer {
 		Graphics2D g = (Graphics2D) i.getGraphics();
 
 		renderGameObjects(g);
-		renderUI(g);
+		mainG.drawImage(i, 0, 0, mainI.getWidth(), mainI.getHeight(), 0, 0, i.getWidth(), i.getHeight(), null);
 
-		Window.panel.setBackground(i);
+		renderUI();
+		Window.panel.setBackground(mainI);
 	}
+
+	private static BufferedImage mainI = new BufferedImage(Window.camera.getWidth(), Window.camera.getHeight(),
+			BufferedImage.TYPE_INT_ARGB);
+	private static Graphics2D mainG = (Graphics2D) mainI.getGraphics();
 
 	private static void renderGameObjects(Graphics2D g) {
 
@@ -93,36 +98,44 @@ public class Renderer {
 
 	public static UI openUI(UI ui) {
 		openUIs.add(ui);
+		for (UIComponent uicomp : ui.getAllChildComponents()) {
+			uicomp.onUIOpened(ui);
+		}
+		ui.onUIOpened(ui);
 		return ui;
 	}
 
 	public static UI closeUI(UI ui) {
 		openUIs.remove(ui);
+		for (UIComponent uicomp : ui.getAllChildComponents()) {
+			uicomp.onUIClosed(ui);
+		}
+		ui.onUIClosed(ui);
 		return ui;
 	}
 
-	private static void renderUI(Graphics2D g) {
+	private static void renderUI() {
+
 		for (UI ui : openUIs) {
 
 			int uiX = ui.getX();
 			int uiY = ui.getY();
 
-			g.drawImage(ui.getBackground(), uiX, uiY, ui.getWidth(), ui.getHeight(), 0, 0, ui.getWidth(),
-					ui.getHeight(), null);
+			mainG.drawImage(ui.getBackground(), uiX, uiY, ui.getWidth(), ui.getHeight(), 0, 0, ui.getResourceWidth(),
+					ui.getResourceHeight(), null);
 
 			for (UIComponent component : ui.getAllChildComponents()) {
-				g.drawImage(component.getBackground(), uiX + component.getX(), uiY + component.getY(),
-						component.getWidth(), component.getHeight(), 0, 0, component.getWidth(), component.getHeight(),
-						null);
+				mainG.drawImage(component.getBackground(), uiX + component.getX(), uiY + component.getY(),
+						component.getWidth(), component.getHeight(), 0, 0, component.getResourceWidth(),
+						component.getResourceHeight(), null);
 			}
-
 		}
 
-		//Render Debug Overlay
+		// Render Debug Overlay
 
-		g.drawImage(debugI, 0, 0, Window.panel.getWidth(), Window.panel.getHeight(), 0, 0, debugI.getWidth(),
+		mainG.drawImage(debugI, 0, 0, Window.panel.getWidth(), Window.panel.getHeight(), 0, 0, debugI.getWidth(),
 				debugI.getHeight(), null);
-		
+
 	}
 
 	private static BufferedImage debugI = new BufferedImage(Window.camera.getWidth(), Window.camera.getHeight(),

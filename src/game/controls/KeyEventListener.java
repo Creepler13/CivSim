@@ -49,8 +49,7 @@ public class KeyEventListener implements KeyListener {
 			bind.put(bindingName, keyEventHandler);
 			keyBindings.put(keyCode, bind);
 		} else {
-			if (keyBindings.get(keyCode).putIfAbsent(bindingName, keyEventHandler) != null)
-				System.err.println(bindingName + " for " + keyCode + " was already in use, so it was Skipped");
+			keyBindings.get(keyCode).put(bindingName, keyEventHandler);
 		}
 	}
 
@@ -64,18 +63,18 @@ public class KeyEventListener implements KeyListener {
 		}
 
 		addKeyEventHandler(bindingName, keyBindings.get(oldKeyCode).get(bindingName), newKeyCode);
-		keyBindings.get(oldKeyCode).remove(bindingName);
+		if (oldKeyCode != newKeyCode)
+			keyBindings.get(oldKeyCode).remove(bindingName);
 	}
 
 	public static void loadBindings(String data) {
-
 		String[] split = data.split(" ");
 		if (split.length != 0)
 			for (String s : split) {
 				String[] sSplit = s.split(":");
-				System.out.println(sSplit.length);
-				if (sSplit.length > 1)
+				if (sSplit.length > 1) {
 					changeBinding(sSplit[0], Integer.parseInt(sSplit[1]));
+				}
 			}
 	}
 

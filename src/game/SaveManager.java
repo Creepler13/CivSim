@@ -182,12 +182,13 @@ public class SaveManager {
 			if (entityReader.ready())
 				while ((line = entityReader.readLine()) != null) {
 					String[] data = line.split(" ");
-					@SuppressWarnings("unused")
-					Entity entity = World.addEntity((Entity) registry.get(data[0]).newInstance(),
-							Integer.parseInt(data[1]), Integer.parseInt(data[2]));
-					entityCounter++;
-					// if (data.length > 3) meta
-
+					if (data.length > 1) {
+						@SuppressWarnings("unused")
+						Entity entity = World.addEntity((Entity) registry.get(data[0]).newInstance(),
+								Integer.parseInt(data[1]), Integer.parseInt(data[2]));
+						entityCounter++;
+						// if (data.length > 3) meta
+					}
 				}
 			System.out.println("Loaded " + entityCounter + " Entitys");
 
