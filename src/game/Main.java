@@ -1,6 +1,11 @@
 package game;
 
+import java.awt.event.KeyEvent;
+
 import game.controls.FrameEvent;
+import game.controls.KeyBinds;
+import game.controls.KeyEventHandler;
+import game.controls.KeyEventListener;
 import game.registrys.ImageRegistry;
 import game.visualls.Renderer;
 import game.visualls.Window;
@@ -12,12 +17,37 @@ public class Main {
 		ImageRegistry.loadImages();
 		World.init(100, 100);
 		Window.init();
+		KeyBinds.init();
 		Window.frame.addWindowListener(new FrameEvent());
 
-		SaveManager.loadGame("save");
+	
 
 		// World.addEntity(new Pig(), 100, 100);
 
+		
+		KeyEventListener.addKeyEventHandler("", new KeyEventHandler() {
+			
+			@Override
+			public void keyTyped(KeyEvent e, String bindingName) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e, String bindingName) {
+				// TODO Auto-generated method stub
+				Renderer.ImageToFile(Renderer.i, "drawBackground");
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e, String bindingName) {
+				// TODO Auto-generated method stub
+				
+			}
+		}, KeyEvent.VK_4);
+		
+		SaveManager.loadGame("save");
+		
 		long tickWait = 1000 / Globals.TPS;
 		long frameWait = 1000 / Globals.FPS;
 

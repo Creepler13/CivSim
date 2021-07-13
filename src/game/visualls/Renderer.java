@@ -3,13 +3,19 @@ package game.visualls;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
 
 import game.Globals;
 import game.objectSupers.Entity;
 import game.objectSupers.Model;
 import game.objectSupers.Tile;
+import game.registrys.ImageRegistry;
 import game.visualls.ui.uiComponents.UI;
 import game.visualls.ui.uiComponents.UIComponent;
 import game.world.Chunk;
@@ -17,18 +23,21 @@ import game.world.World;
 
 public class Renderer {
 
-	public static void update() {
-		BufferedImage i = new BufferedImage(Window.camera.getWidth(), Window.camera.getHeight(),
-				BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g = (Graphics2D) i.getGraphics();
+	public static BufferedImage i = new BufferedImage(Window.camera.getWidth(), Window.camera.getHeight(),
+			BufferedImage.TYPE_INT_ARGB);
+	private static Graphics2D g = (Graphics2D) i.getGraphics();
 
-		renderGameObjects(g);
-		renderUI(g);
+	public static void update() {
+		i = new BufferedImage(Window.camera.getWidth(), Window.camera.getHeight(), BufferedImage.TYPE_INT_ARGB);
+		g = (Graphics2D) i.getGraphics();
+
+		renderGameObjects();
+		renderUI();
 
 		Window.panel.setBackground(i);
 	}
 
-	private static void renderGameObjects(Graphics2D g) {
+	private static void renderGameObjects() {
 
 		int width = Window.camera.getWidth();
 		int height = Window.camera.getHeight();
@@ -58,8 +67,8 @@ public class Renderer {
 
 					Model model = tile.getModel();
 
-					g.drawImage(model.getImage(), tileOnCameraX, tileOnCameraY, tileOnCameraX + Globals.TILE_SIZE,
-							tileOnCameraY + Globals.TILE_SIZE, 0, 0, model.getWidth(), model.getHeight(), null);
+					drawImage(g, model.getImage(), tileOnCameraX, tileOnCameraY, tileOnCameraX + Globals.TILE_SIZE,
+							tileOnCameraY + Globals.TILE_SIZE, 0, 0, model.getWidth(), model.getHeight());
 				}
 
 			}
@@ -80,9 +89,9 @@ public class Renderer {
 					int entityOnCameraX = entity.getPosition().realX - Window.camera.pos.realX;
 					int entityOnCameraY = entity.getPosition().realY - Window.camera.pos.realY;
 
-					g.drawImage(model.getImage(), entityOnCameraX + model.getXOffset(),
+					drawImage(g, model.getImage(), entityOnCameraX + model.getXOffset(),
 							entityOnCameraY + model.getYOffset(), entityOnCameraX + model.getInGameWidth(),
-							entityOnCameraY + model.getInGameHeight(), 0, 0, model.getWidth(), model.getHeight(), null);
+							entityOnCameraY + model.getInGameHeight(), 0, 0, model.getWidth(), model.getHeight());
 				}
 			}
 		}
@@ -109,7 +118,7 @@ public class Renderer {
 		return ui;
 	}
 
-	private static void renderUI(Graphics2D g) {
+	private static void renderUI() {
 
 		for (UI ui : openUIs) {
 
@@ -118,8 +127,8 @@ public class Renderer {
 			int uiWidth = (int) (ui.getWidth() * Window.camera.zoom);
 			int uiHeigth = (int) (ui.getHeight() * Window.camera.zoom);
 
-			g.drawImage(ui.getBackground(), uiX, uiY, uiWidth, uiHeigth, 0, 0, ui.getResourceWidth(),
-					ui.getResourceHeight(), null);
+			drawImage(g, ui.getBackground(), uiX, uiY, uiWidth, uiHeigth, 0, 0, ui.getResourceWidth(),
+					ui.getResourceHeight());
 
 			for (UIComponent component : ui.getAllChildComponents()) {
 
@@ -128,15 +137,16 @@ public class Renderer {
 				int uicompWidth = (int) (component.getWidth() * Window.camera.zoom);
 				int uicompHeigth = (int) (component.getHeight() * Window.camera.zoom);
 
-				g.drawImage(component.getBackground(), uiX + uicompX, uiY + uicompY, uicompWidth, uicompHeigth, 0, 0,
-						component.getResourceWidth(), component.getResourceHeight(), null);
+				drawImage(g, component.getBackground(), uiX + uicompX, uiY + uicompY, uicompWidth, uicompHeigth, 0, 0,
+						component.getResourceWidth(), component.getResourceHeight());
 			}
 		}
 
 		// Render Debug Overlay
+		int iWidth = i.getWidth();
+		int iHeight = i.getHeight();
 
-		g.drawImage(debugI, 0, 0, Window.panel.getWidth(), Window.panel.getHeight(), 0, 0, debugI.getWidth(),
-				debugI.getHeight(), null);
+		drawImage(g, debugI, 0, 0, iWidth, iHeight, 0, 0, debugI.getWidth(), debugI.getHeight());
 
 	}
 
@@ -155,6 +165,26 @@ public class Renderer {
 
 	public static int scaleToWindow(int i) {
 		return (int) (i * Window.panel.scale);
+	}
+
+	private static void drawImage(Graphics2D g, Image img, int d1, int d2, int d3, int d4, int s1, int s2, int s3,
+			int s4) {
+		if (img == null) {
+			img = ImageRegistry.getImage(ImageType.TILE, "missing");
+			s3 = 2;
+			s4 = 2;
+		}
+		g.drawImage(img, d1, d2, d3, d4, s1, s2, s3, s4, null);
+	}
+
+	public static void ImageToFile(BufferedImage img, String fileane) {
+		File outputfile = new File("src/screenshots/" + fileane + ".png");
+		try {
+			ImageIO.write(img, "png", outputfile);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

@@ -1,11 +1,13 @@
 package game.visualls.ui;
 
 import java.awt.Image;
+import java.awt.event.MouseEvent;
 
 import game.registrys.ImageRegistry;
 import game.visualls.ImageType;
 import game.visualls.ui.uiComponents.Button;
 import game.visualls.ui.uiComponents.UI;
+import game.visualls.ui.uiComponents.UIComponent;
 
 public class PauseMenu extends UI {
 
@@ -68,4 +70,9 @@ public class PauseMenu extends UI {
 		System.out.println("unpaused");
 	}
 
+	@Override
+	public void onMouseReleased(MouseEvent e, UIComponent comp) {
+		System.out.println("hit");
+	}
+	
 }

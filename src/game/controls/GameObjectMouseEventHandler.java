@@ -1,5 +1,6 @@
 package game.controls;
 
+import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -67,11 +68,17 @@ public class GameObjectMouseEventHandler implements MouseListener {
 	}
 
 	private UI isOnUI(MouseEvent e) {
+		Renderer.resetDebugGraphics();
+		Graphics2D g = Renderer.getDebugGraphics();
+
 		for (UI ui : Renderer.openUIs) {
-			int x = ui.getX();
-			int y = ui.getY();
-			int width = ui.getWidth();
-			int height = ui.getHeight();
+			int x = (int) (ui.getX() * Window.camera.zoom);
+			int y = (int) (ui.getY() * Window.camera.zoom);
+			int width = (int) (ui.getWidth() * Window.camera.zoom);
+			int height = (int) (ui.getHeight() * Window.camera.zoom);
+
+			g.drawRect(x, y, width, height);
+
 			if (e.getX() >= x && e.getY() >= y && e.getX() < x + width && e.getY() < y + height)
 				return ui;
 		}
@@ -81,10 +88,11 @@ public class GameObjectMouseEventHandler implements MouseListener {
 	private UIComponent getUIComponent(UIComponent ui, MouseEvent e) {
 
 		for (UIComponent cC : ui.getChildComponents()) {
-			int x = cC.getX();
-			int y = cC.getY();
-			int width = cC.getWidth();
-			int height = cC.getHeight();
+			int x = (int) ((cC.getX() + ui.getX()) * Window.camera.zoom);
+			int y = (int) ((cC.getY() + ui.getY()) * Window.camera.zoom);
+			int width = (int) ((cC.getWidth()) * Window.camera.zoom);
+			int height = (int) ((cC.getHeight()) * Window.camera.zoom);
+
 			if (e.getX() >= x && e.getX() < x + width && e.getY() >= y && e.getY() < y + height) {
 				System.exit(0);
 				return getUIComponent(ui, e);
