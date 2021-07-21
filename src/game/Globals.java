@@ -3,7 +3,7 @@ package game;
 public class Globals {
 
 	public static final int TPS = 10;
-	public static final int FPS = 10;
+	public static final int FPS = 60;
 
 	public static final int X_CHUNK_COUNT = 100;
 	public static final int Y_CHUNK_COUNT = 100;

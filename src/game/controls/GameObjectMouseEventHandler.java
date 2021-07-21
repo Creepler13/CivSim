@@ -1,6 +1,5 @@
 package game.controls;
 
-import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -22,7 +21,7 @@ public class GameObjectMouseEventHandler implements MouseListener {
 	public void mouseClicked(MouseEvent e) {
 		UI ui = isOnUI(e);
 		if (ui != null) {
-			ui.onMouseClicked(e, getUIComponent(ui, e));
+			getUIComponent(ui, e).onMouseClicked(e);
 			return;
 		}
 		GameObject gm = getGameObject(e);
@@ -45,7 +44,7 @@ public class GameObjectMouseEventHandler implements MouseListener {
 	public void mousePressed(MouseEvent e) {
 		UI ui = isOnUI(e);
 		if (ui != null) {
-			ui.onMousePressed(e, getUIComponent(ui, e));
+			getUIComponent(ui, e).onMousePressed(e);
 			return;
 		}
 		GameObject gm = getGameObject(e);
@@ -57,7 +56,7 @@ public class GameObjectMouseEventHandler implements MouseListener {
 	public void mouseReleased(MouseEvent e) {
 		UI ui = isOnUI(e);
 		if (ui != null) {
-			ui.onMouseReleased(e, getUIComponent(ui, e));
+			getUIComponent(ui, e).onMouseReleased(e);
 			return;
 		}
 		GameObject gm = getGameObject(e);
@@ -67,17 +66,13 @@ public class GameObjectMouseEventHandler implements MouseListener {
 		CameraControlls.onMouseRelease(e);
 	}
 
-	private UI isOnUI(MouseEvent e) {
-		Renderer.resetDebugGraphics();
-		Graphics2D g = Renderer.getDebugGraphics();
+	public static UI isOnUI(MouseEvent e) {
 
 		for (UI ui : Renderer.openUIs) {
-			int x = (int) (ui.getX() * Window.camera.zoom);
-			int y = (int) (ui.getY() * Window.camera.zoom);
-			int width = (int) (ui.getWidth() * Window.camera.zoom);
-			int height = (int) (ui.getHeight() * Window.camera.zoom);
-
-			g.drawRect(x, y, width, height);
+			int x = ui.getRealX();
+			int y = ui.getRealY();
+			int width = ui.getWidth();
+			int height = ui.getHeight();
 
 			if (e.getX() >= x && e.getY() >= y && e.getX() < x + width && e.getY() < y + height)
 				return ui;
@@ -85,18 +80,18 @@ public class GameObjectMouseEventHandler implements MouseListener {
 		return null;
 	}
 
-	private UIComponent getUIComponent(UIComponent ui, MouseEvent e) {
+	public static UIComponent getUIComponent(UIComponent ui, MouseEvent e) {
 
 		for (UIComponent cC : ui.getChildComponents()) {
-			int x = (int) ((cC.getX() + ui.getX()) * Window.camera.zoom);
-			int y = (int) ((cC.getY() + ui.getY()) * Window.camera.zoom);
-			int width = (int) ((cC.getWidth()) * Window.camera.zoom);
-			int height = (int) ((cC.getHeight()) * Window.camera.zoom);
+			int x = cC.getRealX();
+			int y = cC.getRealY();
+			int width = (cC.getWidth());
+			int height = (cC.getHeight());
 
 			if (e.getX() >= x && e.getX() < x + width && e.getY() >= y && e.getY() < y + height) {
-				System.exit(0);
-				return getUIComponent(ui, e);
+				return getUIComponent(cC, e);
 			}
+
 		}
 		return ui;
 	}
@@ -118,10 +113,6 @@ public class GameObjectMouseEventHandler implements MouseListener {
 			int widthOnCamera = (int) (entity.getModel().getInGameWidth() * Window.camera.zoom);
 			int heightOnCamera = (int) (entity.getModel().getInGameHeight() * Window.camera.zoom);
 
-			// scaled
-			// bacause of
-			// jBackgroundPanel and zoom its complicated;
-
 			if (e.getX() >= xOnCamera && e.getY() >= yOnCamera && e.getX() < xOnCamera + widthOnCamera
 					&& e.getY() < yOnCamera + heightOnCamera) {
 				return entity;
@@ -129,19 +120,10 @@ public class GameObjectMouseEventHandler implements MouseListener {
 
 		}
 
-		for (Tile tile : chunk.tiles) {
-			int xOnCamera = (int) ((tile.getPosition().realX - cameraPosition.realX) * Window.panel.scale);
-			int yOnCamera = (int) ((tile.getPosition().realY - cameraPosition.realY) * Window.panel.scale);
-			int widthHeigthOnCamera = (int) (Globals.TILE_SIZE * Window.panel.scale);
+		Tile t = World.getTile((int) ((cameraPosition.realX + e.getX() * Window.camera.zoom)),
+				(int) ((cameraPosition.realY + e.getY() * Window.camera.zoom)));
 
-			if (e.getX() >= xOnCamera && e.getY() >= yOnCamera && e.getX() < xOnCamera + widthHeigthOnCamera
-					&& e.getY() < yOnCamera + widthHeigthOnCamera) {
-				return tile;
-			}
-
-		}
-
-		return null;
+		return t;
 
 	}
 

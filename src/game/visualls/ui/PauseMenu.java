@@ -7,21 +7,19 @@ import game.registrys.ImageRegistry;
 import game.visualls.ImageType;
 import game.visualls.ui.uiComponents.Button;
 import game.visualls.ui.uiComponents.UI;
-import game.visualls.ui.uiComponents.UIComponent;
 
 public class PauseMenu extends UI {
 
 	public PauseMenu() {
 
-		Button button = new Button(Button.STANDART, 50, 50, 200, 200);
-
-		addComponent(button);
+		Button button = new Button(Button.STANDART, 200, 200);
+		addComponent(button, 50, 50);
 
 	}
 
 	@Override
 	public Image getBackground() {
-		return ImageRegistry.getImage(ImageType.ENTITY, "pig", "pig1");
+		return ImageRegistry.getImage(ImageType.ENTITY, "pig", "pig");
 	}
 
 	@Override
@@ -71,8 +69,8 @@ public class PauseMenu extends UI {
 	}
 
 	@Override
-	public void onMouseReleased(MouseEvent e, UIComponent comp) {
+	public void onMouseReleased(MouseEvent e) {
 		System.out.println("hit");
 	}
-	
+
 }

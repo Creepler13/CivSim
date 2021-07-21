@@ -33,4 +33,8 @@ public class Window {
 		frame.addWindowListener(new FrameEvent());
 	}
 
+	public static void setResolution(Resolution res) {
+		frame.setBounds(frame.getX(), frame.getWidth(), res.width + 16, res.height + 35);
+	}
+
 }

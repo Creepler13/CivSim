@@ -23,18 +23,37 @@ import game.world.World;
 
 public class Renderer {
 
-	public static BufferedImage i = new BufferedImage(Window.camera.getWidth(), Window.camera.getHeight(),
-			BufferedImage.TYPE_INT_ARGB);
-	private static Graphics2D g = (Graphics2D) i.getGraphics();
+	public static BufferedImage mainI, gameI, uiI, debugI;
+	public static Graphics2D mainG, gameG, uiG, debugG;
 
 	public static void update() {
-		i = new BufferedImage(Window.camera.getWidth(), Window.camera.getHeight(), BufferedImage.TYPE_INT_ARGB);
-		g = (Graphics2D) i.getGraphics();
+
+		resetImages();
 
 		renderGameObjects();
 		renderUI();
 
-		Window.panel.setBackground(i);
+		drawImage(mainG, gameI, 0, 0, mainI.getWidth(), mainI.getHeight(), 0, 0, gameI.getWidth(), gameI.getHeight());
+
+		drawImage(mainG, uiI, 0, 0, mainI.getWidth(), mainI.getHeight(), 0, 0, uiI.getWidth(), uiI.getHeight());
+		drawImage(mainG, debugI, 0, 0, mainI.getWidth(), mainI.getHeight(), 0, 0, debugI.getWidth(),
+				debugI.getHeight());
+
+		Window.panel.setBackground(mainI);
+	}
+
+	public static void init() {
+		resetImages();
+		resetDebugGraphics();
+	}
+
+	private static void resetImages() {
+		mainI = new BufferedImage(Window.panel.getWidth(), Window.panel.getHeight(), BufferedImage.TYPE_INT_ARGB);
+		mainG = (Graphics2D) mainI.getGraphics();
+		gameI = new BufferedImage(Window.camera.getWidth(), Window.camera.getHeight(), BufferedImage.TYPE_INT_ARGB);
+		gameG = (Graphics2D) gameI.getGraphics();
+		uiI = new BufferedImage(Window.panel.getWidth(), Window.panel.getHeight(), BufferedImage.TYPE_INT_ARGB);
+		uiG = (Graphics2D) uiI.getGraphics();
 	}
 
 	private static void renderGameObjects() {
@@ -44,9 +63,9 @@ public class Renderer {
 		int xchunks = width / Globals.REAL_CHUNK_SIZE + 2;
 		int ychunks = height / Globals.REAL_CHUNK_SIZE + 2;
 
-		g.setColor(Color.BLACK);
+		gameG.setColor(Color.BLACK);
 
-		g.setStroke(new BasicStroke(2));
+		gameG.setStroke(new BasicStroke(2));
 
 		int x = Window.camera.pos.chunkX * Globals.REAL_CHUNK_SIZE - Window.camera.pos.realX;
 		int y = Window.camera.pos.chunkY * Globals.REAL_CHUNK_SIZE - Window.camera.pos.realY;
@@ -59,7 +78,7 @@ public class Renderer {
 
 				Chunk chunk = World.getChunk(Window.camera.pos.chunkX + xx, Window.camera.pos.chunkY + yy);
 
-				g.drawRect(chunkOnCameraX, chunkOnCameraY, Globals.REAL_CHUNK_SIZE, Globals.REAL_CHUNK_SIZE);
+				gameG.drawRect(chunkOnCameraX, chunkOnCameraY, Globals.REAL_CHUNK_SIZE, Globals.REAL_CHUNK_SIZE);
 
 				for (Tile tile : chunk.tiles) {
 					int tileOnCameraX = chunkOnCameraX + tile.getPosition().tileX * Globals.TILE_SIZE;
@@ -67,7 +86,7 @@ public class Renderer {
 
 					Model model = tile.getModel();
 
-					drawImage(g, model.getImage(), tileOnCameraX, tileOnCameraY, tileOnCameraX + Globals.TILE_SIZE,
+					drawImage(gameG, model.getImage(), tileOnCameraX, tileOnCameraY, tileOnCameraX + Globals.TILE_SIZE,
 							tileOnCameraY + Globals.TILE_SIZE, 0, 0, model.getWidth(), model.getHeight());
 				}
 
@@ -89,7 +108,7 @@ public class Renderer {
 					int entityOnCameraX = entity.getPosition().realX - Window.camera.pos.realX;
 					int entityOnCameraY = entity.getPosition().realY - Window.camera.pos.realY;
 
-					drawImage(g, model.getImage(), entityOnCameraX + model.getXOffset(),
+					drawImage(gameG, model.getImage(), entityOnCameraX + model.getXOffset(),
 							entityOnCameraY + model.getYOffset(), entityOnCameraX + model.getInGameWidth(),
 							entityOnCameraY + model.getInGameHeight(), 0, 0, model.getWidth(), model.getHeight());
 				}
@@ -122,45 +141,33 @@ public class Renderer {
 
 		for (UI ui : openUIs) {
 
-			int uiX = (int) (ui.getX() * Window.camera.zoom);
-			int uiY = (int) (ui.getY() * Window.camera.zoom);
-			int uiWidth = (int) (ui.getWidth() * Window.camera.zoom);
-			int uiHeigth = (int) (ui.getHeight() * Window.camera.zoom);
+			int uiX = ui.getX();
+			int uiY = ui.getY();
+			int uiWidth = ui.getWidth();
+			int uiHeigth = ui.getHeight();
 
-			drawImage(g, ui.getBackground(), uiX, uiY, uiWidth, uiHeigth, 0, 0, ui.getResourceWidth(),
+			drawImage(uiG, ui.getBackground(), uiX, uiY, uiWidth, uiHeigth, 0, 0, ui.getResourceWidth(),
 					ui.getResourceHeight());
 
 			for (UIComponent component : ui.getAllChildComponents()) {
 
-				int uicompX = (int) (component.getX() * Window.camera.zoom);
-				int uicompY = (int) (component.getY() * Window.camera.zoom);
-				int uicompWidth = (int) (component.getWidth() * Window.camera.zoom);
-				int uicompHeigth = (int) (component.getHeight() * Window.camera.zoom);
+				int uicompWidth = component.getWidth();
+				int uicompHeigth = component.getHeight();
 
-				drawImage(g, component.getBackground(), uiX + uicompX, uiY + uicompY, uicompWidth, uicompHeigth, 0, 0,
-						component.getResourceWidth(), component.getResourceHeight());
+				drawImage(uiG, component.getBackground(), component.getRealX(), component.getRealY(), uicompWidth,
+						uicompHeigth, 0, 0, component.getResourceWidth(), component.getResourceHeight());
 			}
 		}
 
-		// Render Debug Overlay
-		int iWidth = i.getWidth();
-		int iHeight = i.getHeight();
-
-		drawImage(g, debugI, 0, 0, iWidth, iHeight, 0, 0, debugI.getWidth(), debugI.getHeight());
-
 	}
 
-	private static BufferedImage debugI = new BufferedImage(Window.camera.getWidth(), Window.camera.getHeight(),
-			BufferedImage.TYPE_INT_ARGB);
-	private static Graphics2D debugG2d = (Graphics2D) debugI.getGraphics();
-
 	public static Graphics2D getDebugGraphics() {
-		return debugG2d;
+		return debugG;
 	}
 
 	public static void resetDebugGraphics() {
-		debugI = new BufferedImage(Window.camera.getWidth(), Window.camera.getHeight(), BufferedImage.TYPE_INT_ARGB);
-		debugG2d = (Graphics2D) debugI.getGraphics();
+		debugI = new BufferedImage(Window.panel.getWidth(), Window.panel.getHeight(), BufferedImage.TYPE_INT_ARGB);
+		debugG = (Graphics2D) debugI.getGraphics();
 	}
 
 	public static int scaleToWindow(int i) {
@@ -171,8 +178,8 @@ public class Renderer {
 			int s4) {
 		if (img == null) {
 			img = ImageRegistry.getImage(ImageType.TILE, "missing");
-			s3 = 2;
-			s4 = 2;
+			s3 = 64;
+			s4 = 64;
 		}
 		g.drawImage(img, d1, d2, d3, d4, s1, s2, s3, s4, null);
 	}

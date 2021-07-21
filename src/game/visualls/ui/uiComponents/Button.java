@@ -14,29 +14,18 @@ public class Button extends UIComponent {
 
 	public int state = 0;
 
-	private int x, y, width, heigth;
+	private int width, heigth;
 
-	public Button(String type, int x, int y, int width, int heigth) {
+	public Button(String type, int width, int heigth) {
 		this.type = type;
 		this.heigth = heigth;
 		this.width = width;
-		this.x = x;
-		this.y = y;
+
 	}
 
 	@Override
 	public Image getBackground() {
 		return ImageRegistry.getImage(ImageType.UI, "button", type + state);
-	}
-
-	@Override
-	public int getX() {
-		return x;
-	}
-
-	@Override
-	public int getY() {
-		return y;
 	}
 
 	@Override
@@ -50,32 +39,34 @@ public class Button extends UIComponent {
 	}
 
 	@Override
-	public void onMouseEntered(MouseEvent e, UIComponent comp) {
+	public void onMouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
 		state = 1;
 	}
 
 	@Override
-	public void onMouseExited(MouseEvent e, UIComponent comp) {
+	public void onMouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
 		state = 0;
 	}
 
 	@Override
-	public void onMousePressed(MouseEvent e, UIComponent comp) {
+	public void onMousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
+		System.out.println("Button");
 		state = 2;
 	}
 
 	@Override
-	public void onMouseReleased(MouseEvent e, UIComponent comp) {
+	public void onMouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
+
+		System.out.println("Button");
 		state = 1;
 	}
 
 	@Override
 	public int getResourceWidth() {
-
 		return 16;
 	}
 
