@@ -10,7 +10,9 @@ public abstract class UIComponent {
 
 	public abstract Image getBackground();
 
-	public void addComponent(UIComponent component) {
+	public void addComponent(UIComponent component, int x, int y) {
+		component.setParent(this);
+		component.setPosition(x, y);
 		childComponents.add(component);
 	}
 
@@ -31,9 +33,38 @@ public abstract class UIComponent {
 		return temp;
 	}
 
-	public abstract int getX();
+	public UIComponent parent;
 
-	public abstract int getY();
+	private void setParent(UIComponent comp) {
+		this.parent = comp;
+	}
+
+	public ArrayList<UIComponent> getAllParentComponents() {
+		ArrayList<UIComponent> temp = new ArrayList<>();
+		if (this.parent != null) {
+			temp.add(this.parent);
+			temp.addAll(this.parent.getAllParentComponents());
+		}
+		return temp;
+	}
+
+	private int x, y, realX, realY;
+
+	public int getX() {
+		return x;
+	};
+
+	public int getY() {
+		return y;
+	};
+
+	public int getRealX() {
+		return realX;
+	};
+
+	public int getRealY() {
+		return realY;
+	};
 
 	public abstract int getWidth();
 
@@ -43,23 +74,36 @@ public abstract class UIComponent {
 
 	public abstract int getResourceHeight();
 
-	public void onMouseClicked(MouseEvent e, UIComponent comp) {
+	public void setPosition(int x, int y) {
+		this.x = x;
+		this.y = y;
+
+		this.realX = x;
+		this.realY = y;
+		for (UIComponent uiComponent : getAllParentComponents()) {
+			this.realX = this.realX + uiComponent.getX();
+			this.realY = this.realY + uiComponent.getY();
+		}
 
 	}
 
-	public void onMousePressed(MouseEvent e, UIComponent comp) {
+	public void onMouseClicked(MouseEvent e) {
 
 	}
 
-	public void onMouseReleased(MouseEvent e, UIComponent comp) {
+	public void onMousePressed(MouseEvent e) {
 
 	}
 
-	public void onMouseEntered(MouseEvent e, UIComponent comp) {
+	public void onMouseReleased(MouseEvent e) {
 
 	}
 
-	public void onMouseExited(MouseEvent e, UIComponent comp) {
+	public void onMouseEntered(MouseEvent e) {
+
+	}
+
+	public void onMouseExited(MouseEvent e) {
 
 	}
 
