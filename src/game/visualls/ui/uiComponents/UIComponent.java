@@ -1,14 +1,12 @@
 package game.visualls.ui.uiComponents;
 
-import java.awt.Image;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public abstract class UIComponent {
 
 	private ArrayList<UIComponent> childComponents = new ArrayList<>();
-
-	public abstract Image getBackground();
 
 	public void addComponent(UIComponent component, int x, int y) {
 		component.setParent(this);
@@ -48,7 +46,8 @@ public abstract class UIComponent {
 		return temp;
 	}
 
-	private int x, y, realX, realY;
+	private int x, y, realX, realY, width, heigth, resourceWidth, resourceHeight;
+	private BufferedImage image;
 
 	public int getX() {
 		return x;
@@ -66,13 +65,36 @@ public abstract class UIComponent {
 		return realY;
 	};
 
-	public abstract int getWidth();
+	public int getWidth() {
+		return width;
+	};
 
-	public abstract int getHeight();
+	public int getHeight() {
+		return heigth;
+	};
 
-	public abstract int getResourceWidth();
+	public int getResourceWidth() {
+		return resourceWidth;
+	}
 
-	public abstract int getResourceHeight();
+	public int getResourceHeight() {
+		return resourceHeight;
+	}
+
+	public void setImage(BufferedImage image, int resourceWidth, int resourceHeight) {
+		this.image = image;
+		this.resourceHeight = resourceHeight;
+		this.resourceWidth = resourceWidth;
+	}
+
+	public void setSize(int width, int heigth) {
+		this.width = width;
+		this.heigth = heigth;
+	}
+
+	public BufferedImage getImage() {
+		return image;
+	};
 
 	public void setPosition(int x, int y) {
 		this.x = x;
@@ -104,6 +126,10 @@ public abstract class UIComponent {
 	}
 
 	public void onMouseExited(MouseEvent e) {
+
+	}
+
+	public void mouseWheelMoved(MouseEvent e) {
 
 	}
 

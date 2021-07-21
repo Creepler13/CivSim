@@ -1,6 +1,5 @@
 package game.visualls.ui;
 
-import java.awt.Image;
 import java.awt.event.MouseEvent;
 
 import game.registrys.ImageRegistry;
@@ -11,51 +10,13 @@ import game.visualls.ui.uiComponents.UI;
 public class PauseMenu extends UI {
 
 	public PauseMenu() {
+		setPosition(100, 100);
+		setSize(500, 500);
+		setImage(ImageRegistry.getImage(ImageType.ENTITY, "pig", "pig1"), 16, 16);
 
 		Button button = new Button(Button.STANDART, 200, 200);
 		addComponent(button, 50, 50);
 
-	}
-
-	@Override
-	public Image getBackground() {
-		return ImageRegistry.getImage(ImageType.ENTITY, "pig", "pig");
-	}
-
-	@Override
-	public int getX() {
-		// TODO Auto-generated method stub
-		return 100;
-	}
-
-	@Override
-	public int getY() {
-		// TODO Auto-generated method stub
-		return 100;
-	}
-
-	@Override
-	public int getWidth() {
-		// TODO Auto-generated method stub
-		return 500;
-	}
-
-	@Override
-	public int getHeight() {
-		// TODO Auto-generated method stub
-		return 500;
-	}
-
-	@Override
-	public int getResourceWidth() {
-		// TODO Auto-generated method stub
-		return 16;
-	}
-
-	@Override
-	public int getResourceHeight() {
-		// TODO Auto-generated method stub
-		return 16;
 	}
 
 	@Override

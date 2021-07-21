@@ -146,7 +146,7 @@ public class Renderer {
 			int uiWidth = ui.getWidth();
 			int uiHeigth = ui.getHeight();
 
-			drawImage(uiG, ui.getBackground(), uiX, uiY, uiWidth, uiHeigth, 0, 0, ui.getResourceWidth(),
+			drawImage(uiG, ui.getImage(), uiX, uiY, uiWidth, uiHeigth, 0, 0, ui.getResourceWidth(),
 					ui.getResourceHeight());
 
 			for (UIComponent component : ui.getAllChildComponents()) {
@@ -154,7 +154,7 @@ public class Renderer {
 				int uicompWidth = component.getWidth();
 				int uicompHeigth = component.getHeight();
 
-				drawImage(uiG, component.getBackground(), component.getRealX(), component.getRealY(), uicompWidth,
+				drawImage(uiG, component.getImage(), component.getRealX(), component.getRealY(), uicompWidth,
 						uicompHeigth, 0, 0, component.getResourceWidth(), component.getResourceHeight());
 			}
 		}

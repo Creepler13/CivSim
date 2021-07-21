@@ -1,6 +1,7 @@
 package game.registrys;
 
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -11,7 +12,7 @@ import game.visualls.ImageType;
 
 public class ImageRegistry {
 
-	private static HashMap<String, Image> images = new HashMap<>();
+	private static HashMap<String, BufferedImage> images = new HashMap<>();
 
 	public static void loadImages() {
 		try {
@@ -39,7 +40,7 @@ public class ImageRegistry {
 		return images.get(type.toString() + ":" + name);
 	}
 
-	public static Image getImage(ImageType type, String dir, String name) {
+	public static BufferedImage getImage(ImageType type, String dir, String name) {
 		return images.get(type.toString() + ":" + dir + "/" + name);
 	}
 
