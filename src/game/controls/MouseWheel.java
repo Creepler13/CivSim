@@ -17,7 +17,7 @@ public class MouseWheel implements MouseWheelListener {
 		if(ui==null) {
 		CameraControlls.onMouseWheel(e);
 		}else {
-			GameObjectMouseEventHandler.getUIComponent(ui, e).mouseWheelMoved(e);
+			GameObjectMouseEventHandler.getUIComponent(ui, e).onMouseWheelMoved(e);
 		}
 	}
 

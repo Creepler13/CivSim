@@ -14,8 +14,10 @@ public class PauseMenu extends UI {
 		setSize(500, 500);
 		setImage(ImageRegistry.getImage(ImageType.ENTITY, "pig", "pig1"), 16, 16);
 
-		Button button = new Button(Button.STANDART, 200, 200);
-		addComponent(button, 50, 50);
+		Button button = new Button(Button.STANDART);
+		button.setPosition(200, 200);
+		button.setSize(50, 50);
+		addComponent(button);
 
 	}
 

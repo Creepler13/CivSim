@@ -19,7 +19,7 @@ public class MouseMoved implements MouseMotionListener {
 			CameraControlls.onDrag(e);
 	}
 
-	private UIComponent lastOn = new Button("a", 0, 0);
+	private UIComponent lastOn = new Button("a");
 
 	@Override
 	public void mouseMoved(MouseEvent e) {

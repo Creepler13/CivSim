@@ -8,14 +8,15 @@ public abstract class UIComponent {
 
 	private ArrayList<UIComponent> childComponents = new ArrayList<>();
 
-	public void addComponent(UIComponent component, int x, int y) {
+	public void addComponent(UIComponent component) {
 		component.setParent(this);
-		component.setPosition(x, y);
 		childComponents.add(component);
+		onComponentAdded(component);
 	}
 
 	public void removeComponent(UIComponent component) {
 		childComponents.remove(component);
+		onComponentRemoved(component);
 	}
 
 	public ArrayList<UIComponent> getChildComponents() {
@@ -129,7 +130,7 @@ public abstract class UIComponent {
 
 	}
 
-	public void mouseWheelMoved(MouseEvent e) {
+	public void onMouseWheelMoved(MouseEvent e) {
 
 	}
 
@@ -141,4 +142,13 @@ public abstract class UIComponent {
 
 	}
 
+public void	onComponentAdded(UIComponent comp){
+		
+	}
+
+
+public void	onComponentRemoved(UIComponent comp){
+		
+	}
+	
 }

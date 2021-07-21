@@ -13,11 +13,9 @@ public class Button extends UIComponent {
 
 	public int state = 0;
 
-	public Button(String type, int width, int heigth) {
-		setSize(width, heigth);
+	public Button(String type) {
 		setImage(ImageRegistry.getImage(ImageType.UI, "button", type + 0), 16, 16);
 		this.type = type;
-
 	}
 
 	@Override
